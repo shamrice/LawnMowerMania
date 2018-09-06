@@ -11,7 +11,6 @@ public class GameState {
     private TiledMap currentTiledMap;
     private int mowTilesRemaining;
 
-
     private GameState() {}
 
     public static GameState getInstance() {
@@ -22,4 +21,36 @@ public class GameState {
         return instance;
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public TiledMap getCurrentTiledMap() {
+        return currentTiledMap;
+    }
+
+    public void setCurrentTiledMap(int level, TiledMap currentTiledMap) {
+        this.currentLevel = level;
+        this.currentTiledMap = currentTiledMap;
+    }
+
+    public int getMowTilesRemaining() {
+        return mowTilesRemaining;
+    }
+
+    public void setMowTilesRemaining(int mowTilesRemaining) {
+        this.mowTilesRemaining = mowTilesRemaining;
+    }
+
+    public void decreaseMowTilesRemaining() {
+        mowTilesRemaining--;
+    }
 }

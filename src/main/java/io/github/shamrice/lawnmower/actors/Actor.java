@@ -6,10 +6,10 @@ public abstract class Actor {
 
     private float x;
     private float y;
-    Image spirteImage;
+    private Image spriteImage;
 
     public Actor(Image spriteImage, float x, float y) {
-        this.spirteImage = spriteImage;
+        this.spriteImage = spriteImage;
         this.x = x;
         this.y = y;
     }
@@ -35,7 +35,7 @@ public abstract class Actor {
         y += deltaY;
     }
 
-    public Image getSpirteImage() {
-        return spirteImage;
+    public Image getSpriteImage() {
+        return spriteImage;
     }
 }
