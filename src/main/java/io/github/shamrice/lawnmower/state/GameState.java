@@ -1,5 +1,6 @@
 package io.github.shamrice.lawnmower.state;
 
+import io.github.shamrice.lawnmower.configuration.Configuration;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class GameState {
@@ -10,6 +11,7 @@ public class GameState {
     private int currentLevel = 1;
     private TiledMap currentTiledMap;
     private int mowTilesRemaining;
+    private Configuration configuration;
 
     private GameState() {}
 
@@ -21,6 +23,10 @@ public class GameState {
         return instance;
     }
 
+    /**
+     * State of game.
+     * @return If game is currently running or not.
+     */
     public boolean isRunning() {
         return isRunning;
     }
@@ -52,5 +58,13 @@ public class GameState {
 
     public void decreaseMowTilesRemaining() {
         mowTilesRemaining--;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }

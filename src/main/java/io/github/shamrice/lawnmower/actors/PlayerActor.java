@@ -11,10 +11,18 @@ public class PlayerActor extends Actor {
         this.score = 0;
     }
 
+    /**
+     *
+     * @return Current score value.
+     */
     public long getScore() {
         return score;
     }
 
+    /**
+     * Update score by the amount specified.
+     * @param delta Amount to update score by.
+     */
     public void changeScore(int delta) {
         score += delta;
         if (score < 0)

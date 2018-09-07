@@ -36,6 +36,14 @@ public class CollisionHandler {
         return collisionEntries;
     }
 
+    /**
+     * Checks to see if player has collided with a tile and handle it. TODO : to be refactored.
+     * @param player
+     * @param deltaX
+     * @param deltaY
+     * @return
+     * @throws IllegalStateException
+     */
     public boolean checkCollision(PlayerActor player, float deltaX, float deltaY) throws IllegalStateException {
 
         if (this.collisionMap == null)

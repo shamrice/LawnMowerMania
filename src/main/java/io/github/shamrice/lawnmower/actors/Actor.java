@@ -14,6 +14,10 @@ public abstract class Actor {
         this.y = y;
     }
 
+    /**
+     * Get screen X position of sprite.
+     * @return x screen position.
+     */
     public float getX() {
         return x;
     }
@@ -22,6 +26,10 @@ public abstract class Actor {
         this.x = x;
     }
 
+    /**
+     * Get screen Y position of sprite
+     * @return y screen position.
+     */
     public float getY() {
         return y;
     }
@@ -30,11 +38,20 @@ public abstract class Actor {
         this.y = y;
     }
 
+    /**
+     * Update X, Y screen coordinates.
+     * @param deltaX Amount to change X position by
+     * @param deltaY Amount to change Y position by
+     */
     public void updateXY(float deltaX, float deltaY) {
         x += deltaX;
         y += deltaY;
     }
 
+    /**
+     *
+     * @return get sprite image for actor
+     */
     public Image getSpriteImage() {
         return spriteImage;
     }

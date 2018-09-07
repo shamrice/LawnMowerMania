@@ -1,7 +1,10 @@
 package io.github.shamrice.lawnmower.core;
 
 import io.github.shamrice.lawnmower.actors.PlayerActor;
+import io.github.shamrice.lawnmower.configuration.Configuration;
+import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
+import io.github.shamrice.lawnmower.inventory.Inventory;
 import io.github.shamrice.lawnmower.state.GameState;
 import org.newdawn.slick.*;
 import org.newdawn.slick.tiled.TiledMap;
@@ -13,6 +16,7 @@ public class Engine extends BasicGame {
     private float delta;
     private CollisionHandler collisionHandler;
     private PlayerActor player;
+    private Inventory inventory;
 
     public Engine() {
         super("Lawn Mower Mania");
@@ -20,6 +24,8 @@ public class Engine extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
+
+        Configuration configuration = ConfigurationBuilder.buildConfiguration();
 
         Image playerImage = new Image("/home/erik/Documents/github/lawnmower/src/main/resources/assets/lawnmower1.png");
         player = new PlayerActor(playerImage, 64, 32);
@@ -31,9 +37,13 @@ public class Engine extends BasicGame {
 
         int collisionEntries = collisionHandler.setUpCollisionMap(map);
 
+        inventory = new Inventory(configuration.getInventoryItemLookUp());
+
+        GameState.getInstance().setConfiguration(configuration);
         GameState.getInstance().setCurrentTiledMap(1, map);
         GameState.getInstance().setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
         GameState.getInstance().setRunning(true);
+
 
         System.out.println("Init complete.");
     }
