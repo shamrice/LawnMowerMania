@@ -1,5 +1,7 @@
 package io.github.shamrice.lawnmower.core;
 
+import io.github.shamrice.lawnmower.actors.ActorType;
+import io.github.shamrice.lawnmower.actors.EnemyActor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
@@ -21,13 +23,18 @@ public class Engine extends BasicGame {
     private final static Logger logger = Logger.getLogger(Engine.class);
     private final static float STEP = 32;
 
+    // TODO : change this to auto configure.
+    private final static String ASSET_LOCATION = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/assets/";
+    private final static String MAPS_LOCATION = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/maps/";
+
     private float delta;
     private boolean isMouseButtonDown = false;
     private CollisionHandler collisionHandler;
     private PlayerActor player;
+    private EnemyActor enemyActor; //TODO : will be moved into it's own manager and will be a list for # of enemies in level.
     private Inventory inventory;
 
-    List<Rectangle> inventoryHitBoxList = new ArrayList<>();
+    List<Rectangle> inventoryHitBoxList = new ArrayList<>(); // TODO : add sprites to inventory and use box as click area.
     private InventoryItem equippedInventoryItem = null;
 
     private String debugMessage = "";
@@ -42,11 +49,17 @@ public class Engine extends BasicGame {
 
         Configuration configuration = ConfigurationBuilder.buildConfiguration();
 
-        Image playerImage = new Image("/home/erik/Documents/github/lawnmower/src/main/resources/assets/lawnmower1.png");
+        // TODO : assets should be based on config and built/displayed per level.
+        Image playerImage = new Image(ASSET_LOCATION + "lawnmower1.png");
         player = new PlayerActor(playerImage, 64, 32);
 
         // TODO : assets should be based on config and built/displayed per level.
-        TiledMap map = new TiledMap("/home/erik/Documents/github/lawnmower/src/main/resources/test3.tmx");
+        Image beeImage = new Image(ASSET_LOCATION + "bee.png");
+        enemyActor = new EnemyActor(ActorType.BEE, beeImage, 716, 256, 100, 0.25f);
+
+
+        // TODO : assets should be based on config and built/displayed per level.
+        TiledMap map = new TiledMap(MAPS_LOCATION + "test3.tmx");
 
         collisionHandler = new CollisionHandler();
 
@@ -60,6 +73,7 @@ public class Engine extends BasicGame {
         GameState.getInstance().setRunning(true);
 
 
+        // TODO : inventory will eventually be updated via the shop before a level.
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
@@ -108,6 +122,15 @@ public class Engine extends BasicGame {
 
         if (!GameState.getInstance().isRunning())
             container.exit();
+
+        //TODO : move into it's own manager for handling enemy movements
+        moveEnemies();
+
+        //TODO : will have list of enemies to iterate through and check collisions between.
+        if (collisionHandler.checkCollisionBetweenActors(player, enemyActor)) {
+            logger.info("GAME OVER. You have been killed by a " + enemyActor.getActorType().name());
+            GameState.getInstance().setRunning(false);
+        }
     }
 
     @Override
@@ -122,6 +145,7 @@ public class Engine extends BasicGame {
         g.drawString("Grass to cut: " + GameState.getInstance().getMowTilesRemaining(), 810, 30);
 
         g.drawImage(player.getSpriteImage(), player.getX(), player.getY());
+        g.drawImage(enemyActor.getSpriteImage(), enemyActor.getX(), enemyActor.getY());
 
         displayInventory(g);
 
@@ -194,6 +218,26 @@ public class Engine extends BasicGame {
             g.drawString("Items left: " + inventory.getNumberOfItemsRemaining(inventoryItem.getInventoryItemType()), 820, y);
             y += 30;
         }
+    }
 
+    //TODO : will be moved into it's own enemy manager. This is temp for debug.
+    private void moveEnemies() {
+
+        float deltaX = 0;
+        float deltaY = 0;
+
+        if (player.getX() > enemyActor.getX()) {
+            deltaX = enemyActor.getMovementSpeed();
+        } else {
+            deltaX = -enemyActor.getMovementSpeed();
+        }
+
+        if (player.getY() > enemyActor.getY()) {
+            deltaY = enemyActor.getMovementSpeed();
+        } else {
+            deltaY = -enemyActor.getMovementSpeed();
+        }
+
+        enemyActor.updateXY(deltaX, deltaY);
     }
 }

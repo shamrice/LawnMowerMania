@@ -1,5 +1,6 @@
 package io.github.shamrice.lawnmower.core.collision;
 
+import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
@@ -44,8 +45,8 @@ public class CollisionHandler {
      * @param player
      * @param deltaX
      * @param deltaY
-     * @return
-     * @throws IllegalStateException
+     * @return Returns true on collision or false if no collision is happening.
+     * @throws IllegalStateException Exception is thrown if there is no collision map set up for the collision handler.
      */
     public boolean checkCollision(PlayerActor player, float deltaX, float deltaY) throws IllegalStateException {
 
@@ -168,5 +169,19 @@ public class CollisionHandler {
 
         }
         return false;
+    }
+
+    /**
+     * Checks collision between two actor objects. Returns true if they are currently colliding.
+     * @param actor1 Actor to test collision with
+     * @param actor2 Second actor to test collision with first actor.
+     * @return Will return true if there is a collision or false if there is not.
+     */
+    public boolean checkCollisionBetweenActors(Actor actor1, Actor actor2) {
+        Shape tempShape = new Rectangle(actor1.getX(), actor1.getY(), 16,   16);
+        Shape tempShape2 = new Rectangle(actor2.getX(), actor2.getY(), 16,   16);
+
+        return tempShape.intersects(tempShape2);
+
     }
 }

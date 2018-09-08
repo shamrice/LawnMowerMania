@@ -5,5 +5,6 @@ package io.github.shamrice.lawnmower.actors;
  */
 public enum ActorType {
     PLAYER,
-    DOG
+    DOG,
+    BEE
 }

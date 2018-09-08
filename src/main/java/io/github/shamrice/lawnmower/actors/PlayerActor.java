@@ -7,7 +7,7 @@ public class PlayerActor extends Actor {
     private long score;
 
     public PlayerActor(Image spriteImage, float x, float y) {
-        super(spriteImage, x, y);
+        super(ActorType.PLAYER, spriteImage, x, y);
         this.score = 0;
     }
 

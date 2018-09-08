@@ -7,8 +7,10 @@ public abstract class Actor {
     private float x;
     private float y;
     private Image spriteImage;
+    private ActorType actorType;
 
-    public Actor(Image spriteImage, float x, float y) {
+    public Actor(ActorType actorType, Image spriteImage, float x, float y) {
+        this.actorType = actorType;
         this.spriteImage = spriteImage;
         this.x = x;
         this.y = y;
@@ -54,5 +56,9 @@ public abstract class Actor {
      */
     public Image getSpriteImage() {
         return spriteImage;
+    }
+
+    public ActorType getActorType() {
+        return actorType;
     }
 }
