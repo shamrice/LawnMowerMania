@@ -8,6 +8,7 @@ import io.github.shamrice.lawnmower.inventory.Inventory;
 import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
+import org.apache.log4j.Logger;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
@@ -29,6 +30,8 @@ public class Engine extends BasicGame {
     private InventoryItem equippedInventoryItem = null;
 
     private String debugMessage = "";
+
+    private final static Logger logger = Logger.getLogger(Engine.class);
 
     public Engine() {
         super("Lawn Mower Mania");
@@ -60,6 +63,8 @@ public class Engine extends BasicGame {
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
+
+        logger.info("TEST LOG ENTRY");
 
         System.out.println("Init complete.");
     }
