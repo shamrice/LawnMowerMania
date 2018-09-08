@@ -1,6 +1,7 @@
 package io.github.shamrice.lawnmower.core.collision;
 
 import io.github.shamrice.lawnmower.actors.PlayerActor;
+import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -116,6 +117,54 @@ public class CollisionHandler {
         player.changeScore(scoreDelta);
         GameState.getInstance().setCurrentTiledMap(GameState.getInstance().getCurrentLevel(), map);
 
+        return false;
+    }
+
+    /**
+     * Check collision between mouse x,y and map x,y and uses item. TODO : NEEDS TO BE REFACTORED!!!
+     * @param itemTypeUsed Item type being used.
+     * @param mouseX Mouse X screen location
+     * @param mouseY Mouse Y screen location
+     * @return returns true if item was able to be used or false if it was not.
+     */
+    public boolean checkMouseCollision(InventoryItemType itemTypeUsed, int mouseX, int mouseY) {
+
+        Shape tempClickShape = new Rectangle(mouseX, mouseY, 16,   16);
+        TiledMap map = GameState.getInstance().getCurrentTiledMap();
+
+        for (int j = 0; j < collisionMap.length; j++) {
+            for (int k = 0; k < collisionMap[j].length; k++) {
+                if (collisionMap[j][k] != null) {
+                    if (collisionMap[j][k].intersects(tempClickShape)) {
+
+                        System.out.println("MOUSE COLLISION WITH BORDER: " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
+                                + " - " + collisionMap[j][k].getMaxX() + ", " + collisionMap[j][k].getMaxY());
+
+                        return false; //clicked on border. Not level area collision.
+                    }
+                }
+            }
+        }
+
+        //TODO : this has become a weird combination of checking collision and actually using the item that it has collided with..
+
+        float tempX = (float)mouseX / 32;
+        float tempY = (float)mouseY / 32;
+
+        if (tempX > map.getWidth() || tempY > map.getHeight()) {
+            return false;
+        } else {
+            System.out.println("Mouse collision at: " + (int)tempX + ", " + (int)tempY);
+
+            switch (itemTypeUsed) {
+                case GRASS_SEED:
+                    map.setTileId((int) tempX, (int) tempY, 1, 1);
+                    return true;
+                default:
+                    System.out.println("Cannot use item " + itemTypeUsed.name());
+            }
+
+        }
         return false;
     }
 }

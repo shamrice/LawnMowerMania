@@ -53,12 +53,13 @@ public class Inventory {
     /**
      * Use inventory item. Decrease amount available by one or remove from inventory if none left.
      * @param itemType Inventory Item Type to be used in the inventory.
-     * @return The InventoryItem used. If item does not exist, a NOT_FOUND item is returned.
+     * @return The InventoryItem used. If item does not exist, null is returned.
      */
     public InventoryItem useInventoryItem(InventoryItemType itemType) {
         if (inventoryItemMap.containsKey(itemType) && inventoryItemMap.get(itemType).size() > 0) {
 
-            InventoryItem itemToUse = inventoryItemMap.get(itemType).remove(inventoryItemMap.get(itemType).size());
+            List<InventoryItem> itemsToUse = inventoryItemMap.get(itemType);
+            InventoryItem itemToUse = itemsToUse.remove(0);
 
             if (inventoryItemMap.get(itemType).size() <= 0) {
                 inventoryItemMap.remove(itemType);
@@ -67,9 +68,13 @@ public class Inventory {
             return itemToUse;
         }
 
-        return inventoryItemLookUp.getItem(InventoryItemType.NOT_FOUND);
+        return null;
     }
 
+    /**
+     * Gets a unique list of inventory items currently in inventory.
+     * @return unique list of inventory items in inventory.
+     */
     public List<InventoryItem> getAllInventoryItems() {
         List<InventoryItem> itemsInInventory = new ArrayList<>();
 
@@ -81,5 +86,20 @@ public class Inventory {
         }
 
         return itemsInInventory;
+    }
+
+    /**
+     * Gets number of inventory items remaining of the type supplied.
+     * @param inventoryItemType InventoryItemType to check remaining count for
+     * @return the number of inventory items left.
+     */
+    public int getNumberOfItemsRemaining(InventoryItemType inventoryItemType) {
+
+        List<InventoryItem> items = inventoryItemMap.get(inventoryItemType);
+        if (items != null) {
+            return items.size();
+        }
+
+        else return 0;
     }
 }
