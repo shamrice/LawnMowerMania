@@ -18,7 +18,8 @@ import java.util.List;
 
 public class Engine extends BasicGame {
 
-    private static final float STEP = 32;
+    private final static Logger logger = Logger.getLogger(Engine.class);
+    private final static float STEP = 32;
 
     private float delta;
     private boolean isMouseButtonDown = false;
@@ -31,7 +32,6 @@ public class Engine extends BasicGame {
 
     private String debugMessage = "";
 
-    private final static Logger logger = Logger.getLogger(Engine.class);
 
     public Engine() {
         super("Lawn Mower Mania");
@@ -64,9 +64,7 @@ public class Engine extends BasicGame {
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
 
-        logger.info("TEST LOG ENTRY");
-
-        System.out.println("Init complete.");
+        logger.info("Init complete.");
     }
 
     @Override
@@ -104,7 +102,7 @@ public class Engine extends BasicGame {
         this.delta = delta;
 
         if (GameState.getInstance().getMowTilesRemaining() <= 0) {
-            System.out.println("MOW COMPLETE");
+            logger.info("MOW COMPLETE");
             container.exit();
         }
 
@@ -143,7 +141,7 @@ public class Engine extends BasicGame {
 
         //TODO : this should check to make sure the user is pressing on the inventory item in the inventory.
         equippedInventoryItem = inventory.useInventoryItem(InventoryItemType.GRASS_SEED);
-        System.out.println("Mouse button " + button + " pressed at " + x + ", " + y);
+        logger.debug("Mouse button " + button + " pressed at " + x + ", " + y);
     }
 
     @Override
@@ -154,17 +152,17 @@ public class Engine extends BasicGame {
 
         if (equippedInventoryItem != null) {
             if (collisionHandler.checkMouseCollision(equippedInventoryItem.getInventoryItemType(), x, y)) {
-                System.out.println("Used item " + equippedInventoryItem.getName() + " at " + x + ", " + y);
+                logger.info("Used item " + equippedInventoryItem.getName() + " at " + x + ", " + y);
                 equippedInventoryItem = null;
             }
         }
 
-        System.out.println("Mouse button " + button + " released at " + x + ", " + y);
+        logger.debug("Mouse button " + button + " released at " + x + ", " + y);
     }
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
-        System.out.println("CLICKED:"+x+","+y+" "+clickCount);
+        logger.debug("CLICKED:"+x+","+y+" "+clickCount);
     }
 
 

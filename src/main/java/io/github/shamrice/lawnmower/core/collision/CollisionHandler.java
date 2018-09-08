@@ -3,13 +3,15 @@ package io.github.shamrice.lawnmower.core.collision;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
+import org.apache.log4j.Logger;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class CollisionHandler {
 
-    private static final int TILE_WIDTH = 32;
+    private final static int TILE_WIDTH = 32; //TODO : can this be replaced with map.getTileWidth()?
+    private final static Logger logger = Logger.getLogger(CollisionHandler.class);
 
     private Rectangle collisionMap[][] = null;
 
@@ -55,7 +57,7 @@ public class CollisionHandler {
         int scoreDelta = 0;
 
 
-        System.out.println("deltaX: " + deltaX + " deltaY: " + deltaY + " x: " + player.getX() + " y: " + player.getY()
+        logger.debug("deltaX: " + deltaX + " deltaY: " + deltaY + " x: " + player.getX() + " y: " + player.getY()
                 + " attemptedX: " + attemptedX + " attemptedY: " + attemptedY);
 
         Shape tempPlayerShape = new Rectangle(attemptedX, attemptedY, 16,   16);
@@ -67,7 +69,7 @@ public class CollisionHandler {
                 if (collisionMap[j][k] != null) {
                     if (collisionMap[j][k].intersects(tempPlayerShape)) {
 
-                        System.out.println("COLLISION : " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
+                        logger.debug("COLLISION : " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
                                 + " - " + collisionMap[j][k].getMaxX() + ", " + collisionMap[j][k].getMaxY());
 
                         //TODO : flowers collision handled inside of a boolean method for area collision is gross. though
@@ -109,7 +111,7 @@ public class CollisionHandler {
         if (currentTileId == 2){
             scoreDelta += 50;
             GameState.getInstance().decreaseMowTilesRemaining();
-            System.out.println("Num mow tiles remaining: " + GameState.getInstance().getMowTilesRemaining());
+            logger.debug("Num mow tiles remaining: " + GameState.getInstance().getMowTilesRemaining());
         } else if (currentTileId > 2) {
             scoreDelta -= 25;
         }
@@ -137,7 +139,7 @@ public class CollisionHandler {
                 if (collisionMap[j][k] != null) {
                     if (collisionMap[j][k].intersects(tempClickShape)) {
 
-                        System.out.println("MOUSE COLLISION WITH BORDER: " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
+                        logger.debug("MOUSE COLLISION WITH BORDER: " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
                                 + " - " + collisionMap[j][k].getMaxX() + ", " + collisionMap[j][k].getMaxY());
 
                         return false; //clicked on border. Not level area collision.
@@ -154,14 +156,14 @@ public class CollisionHandler {
         if (tempX > map.getWidth() || tempY > map.getHeight()) {
             return false;
         } else {
-            System.out.println("Mouse collision at: " + (int)tempX + ", " + (int)tempY);
+            logger.debug("Mouse collision at: " + (int)tempX + ", " + (int)tempY);
 
             switch (itemTypeUsed) {
                 case GRASS_SEED:
                     map.setTileId((int) tempX, (int) tempY, 1, 1);
                     return true;
                 default:
-                    System.out.println("Cannot use item " + itemTypeUsed.name());
+                    logger.info("Cannot use item " + itemTypeUsed.name());
             }
 
         }
