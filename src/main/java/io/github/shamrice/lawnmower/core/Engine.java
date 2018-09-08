@@ -5,6 +5,8 @@ import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
 import io.github.shamrice.lawnmower.inventory.Inventory;
+import io.github.shamrice.lawnmower.inventory.InventoryItem;
+import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import org.newdawn.slick.*;
 import org.newdawn.slick.tiled.TiledMap;
@@ -44,6 +46,10 @@ public class Engine extends BasicGame {
         GameState.getInstance().setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
         GameState.getInstance().setRunning(true);
 
+
+        inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
+
+        inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
 
         System.out.println("Init complete.");
     }
@@ -104,8 +110,25 @@ public class Engine extends BasicGame {
 
         g.drawImage(player.getSpriteImage(), player.getX(), player.getY());
 
+        displayInventory(g);
+
         //Font font = new Font("Ariel", Font.PLAIN, 12);
         //TrueTypeFont test = new TrueTypeFont(font, true);
         //test.drawString(810, 30, "HELLO");
+    }
+
+    private void displayInventory(Graphics g) {
+        int y = 60;
+
+        g.drawString("Inventory:", 810, y);
+        y += 25;
+        for (InventoryItem inventoryItem : inventory.getAllInventoryItems()) {
+            g.drawString(inventoryItem.getName(), 820, y);
+            y += 15;
+            g.drawString(inventoryItem.getDescription(), 820, y);
+            y += 15;
+            g.drawString("Value: " + inventoryItem.getValue(), 820, y);
+            y += 25;
+        }
     }
 }

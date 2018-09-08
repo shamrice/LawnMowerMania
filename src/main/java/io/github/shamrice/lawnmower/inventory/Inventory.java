@@ -69,4 +69,17 @@ public class Inventory {
 
         return inventoryItemLookUp.getItem(InventoryItemType.NOT_FOUND);
     }
+
+    public List<InventoryItem> getAllInventoryItems() {
+        List<InventoryItem> itemsInInventory = new ArrayList<>();
+
+        for (InventoryItemType itemType : inventoryItemMap.keySet()) {
+            InventoryItem item = inventoryItemLookUp.getItem(itemType);
+            if (item != null) {
+                itemsInInventory.add(item);
+            }
+        }
+
+        return itemsInInventory;
+    }
 }

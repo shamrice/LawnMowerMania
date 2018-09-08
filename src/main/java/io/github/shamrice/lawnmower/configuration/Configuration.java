@@ -10,9 +10,8 @@ public class Configuration {
 
     private InventoryItemLookUp inventoryItemLookUp;
 
-    public Configuration() {
-        //TODO : just a place holder....
-        inventoryItemLookUp = new InventoryItemLookUp(new HashMap<>());
+    public Configuration(InventoryItemLookUp inventoryItemLookUp) {
+        this.inventoryItemLookUp = inventoryItemLookUp;
     }
 
     /**

@@ -7,7 +7,7 @@ public class InventoryItem {
     private int value;
     private InventoryItemType inventoryItemType;
 
-    public InventoryItem(String name, String description, int value, InventoryItemType inventoryItemType) {
+    public InventoryItem(InventoryItemType inventoryItemType, String name, String description, int value) {
         this.name = name;
         this.description = description;
         this.value = value;
