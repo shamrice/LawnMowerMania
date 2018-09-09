@@ -95,30 +95,38 @@ public class CollisionHandler {
         int mapY = (int)(attemptedY / 32);
         int currentTileId = map.getTileId(mapX, mapY, 1);
 
-        if (currentTileId < 4) {
-            currentTileId++;
+        logger.info("MapXY: " + mapX + ", " + mapY + " :: playerMapXY: " + player.getMapX() + ", " + player.getMapY());
+
+        //make sure player is walking over a new tile and not the one they are already on.
+        if (mapX != player.getMapX() || mapY != player.getMapY()) {
+
+            player.setMapXY(mapX, mapY);
+
+            if (currentTileId < 4) {
+                currentTileId++;
+            }
+
+            if (currentTileId == 1)
+                currentTileId = 2;
+
+            map.setTileId(
+                    mapX,
+                    mapY,
+                    1,
+                    currentTileId
+            );
+
+            if (currentTileId == 2) {
+                scoreDelta += 50;
+                GameState.getInstance().decreaseMowTilesRemaining();
+                logger.debug("Num mow tiles remaining: " + GameState.getInstance().getMowTilesRemaining());
+            } else if (currentTileId > 2) {
+                scoreDelta -= 25;
+            }
+
+            player.changeScore(scoreDelta);
+
         }
-
-        if (currentTileId == 1)
-            currentTileId = 2;
-
-        map.setTileId(
-                mapX,
-                mapY,
-                1,
-                currentTileId
-        );
-
-        if (currentTileId == 2){
-            scoreDelta += 50;
-            GameState.getInstance().decreaseMowTilesRemaining();
-            logger.debug("Num mow tiles remaining: " + GameState.getInstance().getMowTilesRemaining());
-        } else if (currentTileId > 2) {
-            scoreDelta -= 25;
-        }
-
-        player.changeScore(scoreDelta);
-        GameState.getInstance().setCurrentTiledMap(GameState.getInstance().getCurrentLevel(), map);
 
         return false;
     }
@@ -161,7 +169,7 @@ public class CollisionHandler {
 
             switch (itemTypeUsed) {
                 case GRASS_SEED:
-                    map.setTileId((int) tempX, (int) tempY, 1, 1);
+                    map.setTileId((int) tempX, (int) tempY, 1, 2);
                     return true;
                 default:
                     logger.info("Cannot use item " + itemTypeUsed.name());

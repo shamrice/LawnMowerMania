@@ -1,6 +1,7 @@
 package io.github.shamrice.lawnmower.core;
 
 import io.github.shamrice.lawnmower.actors.ActorType;
+import io.github.shamrice.lawnmower.actors.Direction;
 import io.github.shamrice.lawnmower.actors.EnemyActor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.configuration.Configuration;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Engine extends BasicGame {
 
     private final static Logger logger = Logger.getLogger(Engine.class);
-    private final static float STEP = 32;
+    private final static float STEP = 1; //32;
 
     // TODO : change this to auto configure.
     private final static String ASSET_LOCATION = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/assets/";
@@ -33,6 +34,7 @@ public class Engine extends BasicGame {
     private PlayerActor player;
     private EnemyActor enemyActor; //TODO : will be moved into it's own manager and will be a list for # of enemies in level.
     private Inventory inventory;
+    private TrueTypeFont FONT;
 
     List<Rectangle> inventoryHitBoxList = new ArrayList<>(); // TODO : add sprites to inventory and use box as click area.
     private InventoryItem equippedInventoryItem = null;
@@ -49,9 +51,14 @@ public class Engine extends BasicGame {
 
         Configuration configuration = ConfigurationBuilder.buildConfiguration();
 
+
+        //TODO : move to configuration
+        java.awt.Font font = new java.awt.Font("Ariel", java.awt.Font.PLAIN, 12);
+        FONT = new TrueTypeFont(font, true);
+
         // TODO : assets should be based on config and built/displayed per level.
         Image playerImage = new Image(ASSET_LOCATION + "lawnmower1.png");
-        player = new PlayerActor(playerImage, 64, 32);
+        player = new PlayerActor(playerImage, 64, 32, STEP);
 
         // TODO : assets should be based on config and built/displayed per level.
         Image beeImage = new Image(ASSET_LOCATION + "bee.png");
@@ -84,34 +91,60 @@ public class Engine extends BasicGame {
     @Override
     public void update(GameContainer container, int delta) {
 
-        //TODO : decide between key press and isKeyDown game play.
-        //TODO : if isKeyDown, regulate player speed.
-
-
-        //TODO : check move the update xy to the end and check collision based on key pressed
-        //TODO : instead of having almost the same code on every if block.
+        float playerSpeed = player.getMovementSpeed();
 
         Input userInput = container.getInput();
+
         if (userInput.isKeyDown(Input.KEY_Q) || userInput.isKeyDown(Input.KEY_ESCAPE)) {
             GameState.getInstance().setRunning(false);
         }
 
+        /* arrow keys */
         if (userInput.isKeyPressed(Input.KEY_LEFT)) {
-            if (!collisionHandler.checkCollision(player,-STEP, 0))
-                player.updateXY(-STEP, 0);
+            player.setDirection(Direction.LEFT);
         }
 
-        if (userInput.isKeyPressed(Input.KEY_RIGHT))
-            if (!collisionHandler.checkCollision(player,STEP, 0))
-                player.updateXY(STEP, 0);
+        if (userInput.isKeyPressed(Input.KEY_RIGHT)) {
+            player.setDirection(Direction.RIGHT);
+        }
 
-        if (userInput.isKeyPressed(Input.KEY_UP))
-            if (!collisionHandler.checkCollision(player,0, -STEP))
-                player.updateXY(0, -STEP);
+        if (userInput.isKeyPressed(Input.KEY_UP)) {
+            player.setDirection(Direction.UP);
+        }
 
-        if (userInput.isKeyPressed(Input.KEY_DOWN))
-            if (!collisionHandler.checkCollision(player,0, STEP))
-                player.updateXY(0, STEP);
+        if (userInput.isKeyPressed(Input.KEY_DOWN)) {
+            player.setDirection(Direction.DOWN);
+        }
+
+        if (userInput.isKeyDown(Input.KEY_SPACE)) {
+            if (player.useStamina(1)) {
+                playerSpeed *= 1.75;
+            }
+        } else if (!userInput.isKeyDown(Input.KEY_SPACE)) {
+            player.recoverStamina(0.2f);
+        }
+
+        float tempStepX = 0;
+        float tempStepY = 0;
+
+        switch (player.getDirection()) {
+            case LEFT:
+                tempStepX = -playerSpeed;
+                break;
+            case RIGHT:
+                tempStepX = playerSpeed;
+                break;
+            case UP:
+                tempStepY = -playerSpeed;
+                break;
+            case DOWN:
+                tempStepY = playerSpeed;
+                break;
+        }
+
+        if (!collisionHandler.checkCollision(player, tempStepX, tempStepY)) {
+            player.updateXY(tempStepX, tempStepY);
+        }
 
         this.delta = delta;
 
@@ -140,20 +173,32 @@ public class Engine extends BasicGame {
 
         GameState.getInstance().getCurrentTiledMap().render(0,0);
 
+
+        //test.drawString(810, 30, "HELLO");
+
+        displayInventory(g, 100);
+
         g.drawString("x: " + player.getX() + " y: " + player.getY() + " delta: " + delta, 100, 1);
-        g.drawString("Score: " + player.getScore(), 810, 10);
-        g.drawString("Grass to cut: " + GameState.getInstance().getMowTilesRemaining(), 810, 30);
+        FONT.drawString(810, 10, "Score: " + player.getScore());
+        FONT.drawString(810, 30, "Grass to cut: " + GameState.getInstance().getMowTilesRemaining());
+
+        Color staminaTextColor = Color.green;
+
+        if (player.getStamina() <= 10)
+            staminaTextColor = Color.red;
+        else if (player.getStamina() > 10 && player.getStamina() <= 50)
+            staminaTextColor = Color.yellow;
+        else if (player.getStamina() > 50 && player.getStamina() <= 75)
+            staminaTextColor = Color.green;
+        else
+            staminaTextColor = Color.white;
+
+        FONT.drawString(810, 50,"Stamina: " + (int)player.getStamina() + "/100", staminaTextColor);
 
         g.drawImage(player.getSpriteImage(), player.getX(), player.getY());
         g.drawImage(enemyActor.getSpriteImage(), enemyActor.getX(), enemyActor.getY());
 
-        displayInventory(g);
 
-   //     System.out.println("DEBUG: " + debugMessage);
-
-        //Font font = new Font("Ariel", Font.PLAIN, 12);
-        //TrueTypeFont test = new TrueTypeFont(font, true);
-        //test.drawString(810, 30, "HELLO");
     }
 
 
@@ -194,28 +239,31 @@ public class Engine extends BasicGame {
      * Draws inventory information on left side of screen.
      * @param g Graphics object to render text with.
      */
-    private void displayInventory(Graphics g) {
-        int y = 60;
+    private void displayInventory(Graphics g, int y) {
+
+        int x = 810;
 
         //display equipped item (if any)
         String equippedItemName = "None";
         if (equippedInventoryItem != null) {
             equippedItemName = equippedInventoryItem.getName();
         }
-        g.drawString("Equipped: " + equippedItemName, 810, y);
+        FONT.drawString(x, y, "Equipped: " + equippedItemName);
         y += 25;
 
         //type full inventory. (to be replaced with icons.
-        g.drawString("Inventory:", 810, y);
+        FONT.drawString(x, y, "Inventory:");
         y += 25;
+        x += 10;
+
         for (InventoryItem inventoryItem : inventory.getAllInventoryItems()) {
-            g.drawString(inventoryItem.getName(), 820, y);
+            FONT.drawString(x, y, inventoryItem.getName());
             y += 15;
-            g.drawString(inventoryItem.getDescription(), 820, y);
+            FONT.drawString(x, y, inventoryItem.getDescription());
             y += 15;
-            g.drawString("Value: " + inventoryItem.getValue(), 820, y);
+            FONT.drawString(x,  y, "Value: " + inventoryItem.getValue());
             y += 15;
-            g.drawString("Items left: " + inventory.getNumberOfItemsRemaining(inventoryItem.getInventoryItemType()), 820, y);
+            FONT.drawString(x, y, "Items left: " + inventory.getNumberOfItemsRemaining(inventoryItem.getInventoryItemType()));
             y += 30;
         }
     }
