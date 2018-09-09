@@ -2,6 +2,7 @@ package io.github.shamrice.lawnmower.core.collision;
 
 import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
+import io.github.shamrice.lawnmower.common.TileType;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import org.apache.log4j.Logger;
@@ -76,8 +77,8 @@ public class CollisionHandler {
                         //TODO : flowers collision handled inside of a boolean method for area collision is gross. though
                         //TODO : looping through this loop multiple times is pretty gross as well. maybe make flowers an
                         //TODO : object instead of modifying them based on tilemap? (have generic "flower bed" tile underneath.)
-                        if (map.getTileId(j, k, 1) == 6) {
-                            map.setTileId(j, k, 1, 3);
+                        if (map.getTileId(j, k, 1) == TileType.FLOWERS.getId()) {
+                            map.setTileId(j, k, 1, TileType.OVER_MOWED_GRASS.getId());
                             scoreDelta -= 500;
                         } else {
 
@@ -102,12 +103,12 @@ public class CollisionHandler {
 
             player.setMapXY(mapX, mapY);
 
-            if (currentTileId < 4) {
+            if (currentTileId < TileType.DEAD_GRASS.getId()) {
                 currentTileId++;
             }
 
-            if (currentTileId == 1)
-                currentTileId = 2;
+            if (currentTileId == TileType.UNCUT_GRASS.getId())
+                currentTileId = TileType.CUT_GRASS.getId();
 
             map.setTileId(
                     mapX,
@@ -116,11 +117,11 @@ public class CollisionHandler {
                     currentTileId
             );
 
-            if (currentTileId == 2) {
+            if (currentTileId == TileType.CUT_GRASS.getId()) {
                 scoreDelta += 50;
                 GameState.getInstance().decreaseMowTilesRemaining();
                 logger.debug("Num mow tiles remaining: " + GameState.getInstance().getMowTilesRemaining());
-            } else if (currentTileId > 2) {
+            } else if (currentTileId > TileType.CUT_GRASS.getId()) {
                 scoreDelta -= 25;
             }
 
@@ -169,7 +170,7 @@ public class CollisionHandler {
 
             switch (itemTypeUsed) {
                 case GRASS_SEED:
-                    map.setTileId((int) tempX, (int) tempY, 1, 2);
+                    map.setTileId((int) tempX, (int) tempY, 1, TileType.CUT_GRASS.getId());
                     return true;
                 default:
                     logger.info("Cannot use item " + itemTypeUsed.name());
