@@ -3,15 +3,16 @@ package io.github.shamrice.lawnmower.configuration;
 // TODO : build this out.
 
 import io.github.shamrice.lawnmower.inventory.lookup.InventoryItemLookUp;
-
-import java.util.HashMap;
+import org.newdawn.slick.TrueTypeFont;
 
 public class Configuration {
 
     private InventoryItemLookUp inventoryItemLookUp;
+    private TrueTypeFont trueTypeFont;
 
-    public Configuration(InventoryItemLookUp inventoryItemLookUp) {
+    public Configuration(InventoryItemLookUp inventoryItemLookUp, TrueTypeFont trueTypeFont) {
         this.inventoryItemLookUp = inventoryItemLookUp;
+        this.trueTypeFont = trueTypeFont;
     }
 
     /**
@@ -20,5 +21,9 @@ public class Configuration {
      */
     public InventoryItemLookUp getInventoryItemLookUp() {
         return inventoryItemLookUp;
+    }
+
+    public TrueTypeFont getTrueTypeFont() {
+        return trueTypeFont;
     }
 }

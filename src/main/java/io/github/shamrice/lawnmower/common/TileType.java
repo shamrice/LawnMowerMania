@@ -12,7 +12,7 @@ public enum TileType {
 
     private final int id;
 
-    private TileType(int id) {
+    TileType(int id) {
         this.id = id;
     }
 

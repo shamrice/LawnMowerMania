@@ -4,7 +4,6 @@ import org.newdawn.slick.Image;
 
 public class EnemyActor extends Actor {
 
-    private boolean isAlive = true;
     private int currentHealth;
     private float movementSpeed;
 
@@ -27,13 +26,7 @@ public class EnemyActor extends Actor {
         }
     }
 
-    /**
-     * Gets the living status of an enemy.
-     * @return Returns true if alive otherwise, will return false.
-     */
-    public boolean isAlive() {
-        return isAlive;
-    }
+
 
     /**
      * Gets speed of which enemy should move in the level.

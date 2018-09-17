@@ -5,6 +5,7 @@ package io.github.shamrice.lawnmower.configuration;
 import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.inventory.lookup.InventoryItemLookUp;
+import org.newdawn.slick.TrueTypeFont;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,8 @@ public class ConfigurationBuilder {
      */
     public static Configuration buildConfiguration() {
         return new Configuration(
-                buildInventoryItemLookup()
+                buildInventoryItemLookup(),
+                buildTrueTypeFont()
         );
     }
 
@@ -45,5 +47,11 @@ public class ConfigurationBuilder {
         inventoryItemMap.put(InventoryItemType.GRASS_SEED, inventoryItem);
 
         return new InventoryItemLookUp(inventoryItemMap);
+    }
+
+    private static TrueTypeFont buildTrueTypeFont() {
+        //TODO : build from configuration file.
+        java.awt.Font font = new java.awt.Font("Ariel", java.awt.Font.PLAIN, 12);
+        return new TrueTypeFont(font, true);
     }
 }

@@ -1,12 +1,10 @@
 package io.github.shamrice.lawnmower.core;
 
-import io.github.shamrice.lawnmower.actors.ActorType;
-import io.github.shamrice.lawnmower.actors.Direction;
-import io.github.shamrice.lawnmower.actors.EnemyActor;
-import io.github.shamrice.lawnmower.actors.PlayerActor;
+import io.github.shamrice.lawnmower.actors.*;
 import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
+import io.github.shamrice.lawnmower.core.graphics.GraphicsManager;
 import io.github.shamrice.lawnmower.inventory.Inventory;
 import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
@@ -33,11 +31,9 @@ public class Engine extends BasicGame {
     private CollisionHandler collisionHandler;
     private PlayerActor player;
     private EnemyActor enemyActor; //TODO : will be moved into it's own manager and will be a list for # of enemies in level.
-    private Inventory inventory;
-    private TrueTypeFont FONT;
+    private GraphicsManager graphicsManager;
 
     List<Rectangle> inventoryHitBoxList = new ArrayList<>(); // TODO : add sprites to inventory and use box as click area.
-    private InventoryItem equippedInventoryItem = null;
 
     private String debugMessage = "";
 
@@ -51,10 +47,9 @@ public class Engine extends BasicGame {
 
         Configuration configuration = ConfigurationBuilder.buildConfiguration();
 
-
         //TODO : move to configuration
-        java.awt.Font font = new java.awt.Font("Ariel", java.awt.Font.PLAIN, 12);
-        FONT = new TrueTypeFont(font, true);
+        //java.awt.Font font = new java.awt.Font("Ariel", java.awt.Font.PLAIN, 12);
+        //FONT = new TrueTypeFont(font, true);
 
         // TODO : assets should be based on config and built/displayed per level.
         Image playerImage = new Image(ASSET_LOCATION + "lawnmower1.png");
@@ -72,18 +67,20 @@ public class Engine extends BasicGame {
 
         int collisionEntries = collisionHandler.setUpCollisionMap(map);
 
-        inventory = new Inventory(configuration.getInventoryItemLookUp());
-
-        GameState.getInstance().setConfiguration(configuration);
-        GameState.getInstance().setCurrentTiledMap(1, map);
-        GameState.getInstance().setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
-        GameState.getInstance().setRunning(true);
-
-
+        Inventory inventory = new Inventory(configuration.getInventoryItemLookUp());
         // TODO : inventory will eventually be updated via the shop before a level.
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
+
+        GameState state = GameState.getInstance();
+        state.setConfiguration(configuration);
+        state.setCurrentTiledMap(1, map);
+        state.setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
+        state.setRunning(true);
+        state.setInventory(inventory);
+
+        graphicsManager = new GraphicsManager(configuration.getTrueTypeFont());
 
         logger.info("Init complete.");
     }
@@ -149,11 +146,11 @@ public class Engine extends BasicGame {
         this.delta = delta;
 
         if (GameState.getInstance().getMowTilesRemaining() <= 0) {
-            logger.info("MOW COMPLETE");
+            logger.info("MOW COMPLETE :: Score : " + player.getScore());
             container.exit();
         }
 
-        if (!GameState.getInstance().isRunning())
+        if (!GameState.getInstance().isRunning() || !player.isAlive())
             container.exit();
 
         //TODO : move into it's own manager for handling enemy movements
@@ -170,34 +167,8 @@ public class Engine extends BasicGame {
     public void render(GameContainer container, Graphics g) throws SlickException {
 
         //TODO : image assets need to be built by configuration not hard coded.
-
-        GameState.getInstance().getCurrentTiledMap().render(0,0);
-
-
-        //test.drawString(810, 30, "HELLO");
-
-        displayInventory(g, 100);
-
-        g.drawString("x: " + player.getX() + " y: " + player.getY() + " delta: " + delta, 100, 1);
-        FONT.drawString(810, 10, "Score: " + player.getScore());
-        FONT.drawString(810, 30, "Grass to cut: " + GameState.getInstance().getMowTilesRemaining());
-
-        Color staminaTextColor = Color.green;
-
-        if (player.getStamina() <= 10)
-            staminaTextColor = Color.red;
-        else if (player.getStamina() > 10 && player.getStamina() <= 50)
-            staminaTextColor = Color.yellow;
-        else if (player.getStamina() > 50 && player.getStamina() <= 75)
-            staminaTextColor = Color.green;
-        else
-            staminaTextColor = Color.white;
-
-        FONT.drawString(810, 50,"Stamina: " + (int)player.getStamina() + "/100", staminaTextColor);
-
-        g.drawImage(player.getSpriteImage(), player.getX(), player.getY());
-        g.drawImage(enemyActor.getSpriteImage(), enemyActor.getX(), enemyActor.getY());
-
+        graphicsManager.displayPlayAreaPanel(g, player, enemyActor);
+        graphicsManager.displayInformationPanel(g, player, delta);
 
     }
 
@@ -208,8 +179,9 @@ public class Engine extends BasicGame {
             isMouseButtonDown = true;
         }
 
+        GameState state = GameState.getInstance();
         //TODO : this should check to make sure the user is pressing on the inventory item in the inventory.
-        equippedInventoryItem = inventory.useInventoryItem(InventoryItemType.GRASS_SEED);
+        state.setEquippedInventoryItem(state.getInventory().useInventoryItem(InventoryItemType.GRASS_SEED));
         logger.debug("Mouse button " + button + " pressed at " + x + ", " + y);
     }
 
@@ -219,10 +191,11 @@ public class Engine extends BasicGame {
             isMouseButtonDown = false;
         }
 
-        if (equippedInventoryItem != null) {
-            if (collisionHandler.checkMouseCollision(equippedInventoryItem.getInventoryItemType(), x, y)) {
-                logger.info("Used item " + equippedInventoryItem.getName() + " at " + x + ", " + y);
-                equippedInventoryItem = null;
+        GameState state = GameState.getInstance();
+        if (state.getEquippedInventoryItem() != null) {
+            if (collisionHandler.checkMouseCollision(state.getEquippedInventoryItem().getInventoryItemType(), x, y)) {
+                logger.info("Used item " + state.getEquippedInventoryItem().getName() + " at " + x + ", " + y);
+                state.setEquippedInventoryItem(null);
             }
         }
 
@@ -234,39 +207,6 @@ public class Engine extends BasicGame {
         logger.debug("CLICKED:"+x+","+y+" "+clickCount);
     }
 
-
-    /**
-     * Draws inventory information on left side of screen.
-     * @param g Graphics object to render text with.
-     */
-    private void displayInventory(Graphics g, int y) {
-
-        int x = 810;
-
-        //display equipped item (if any)
-        String equippedItemName = "None";
-        if (equippedInventoryItem != null) {
-            equippedItemName = equippedInventoryItem.getName();
-        }
-        FONT.drawString(x, y, "Equipped: " + equippedItemName);
-        y += 25;
-
-        //type full inventory. (to be replaced with icons.
-        FONT.drawString(x, y, "Inventory:");
-        y += 25;
-        x += 10;
-
-        for (InventoryItem inventoryItem : inventory.getAllInventoryItems()) {
-            FONT.drawString(x, y, inventoryItem.getName());
-            y += 15;
-            FONT.drawString(x, y, inventoryItem.getDescription());
-            y += 15;
-            FONT.drawString(x,  y, "Value: " + inventoryItem.getValue());
-            y += 15;
-            FONT.drawString(x, y, "Items left: " + inventory.getNumberOfItemsRemaining(inventoryItem.getInventoryItemType()));
-            y += 30;
-        }
-    }
 
     //TODO : will be moved into it's own enemy manager. This is temp for debug.
     private void moveEnemies() {

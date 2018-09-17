@@ -8,6 +8,7 @@ public abstract class Actor {
     private float y;
     private Image spriteImage;
     private ActorType actorType;
+    protected boolean isAlive = true;
 
     public Actor(ActorType actorType, Image spriteImage, float x, float y) {
         this.actorType = actorType;
@@ -60,5 +61,13 @@ public abstract class Actor {
 
     public ActorType getActorType() {
         return actorType;
+    }
+
+    /**
+     * Gets the living status of an enemy.
+     * @return Returns true if alive otherwise, will return false.
+     */
+    public boolean isAlive() {
+        return isAlive;
     }
 }
