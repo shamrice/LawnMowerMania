@@ -1,9 +1,10 @@
 package io.github.shamrice.lawnmower.core.graphics.displays;
 
-import io.github.shamrice.lawnmower.actors.EnemyActor;
-import io.github.shamrice.lawnmower.actors.PlayerActor;
+import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.state.GameState;
 import org.newdawn.slick.Graphics;
+
+import java.util.List;
 
 public class PlayAreaDisplay {
 
@@ -11,8 +12,7 @@ public class PlayAreaDisplay {
         GameState.getInstance().getCurrentTiledMap().render(0,0);
     }
 
-    public void displayActors(Graphics g, PlayerActor player, EnemyActor enemyActor) {
-        g.drawImage(player.getSpriteImage(), player.getX(), player.getY());
-        g.drawImage(enemyActor.getSpriteImage(), enemyActor.getX(), enemyActor.getY());
+    public void displayActors(Graphics g, List<Actor> actors) {
+        actors.forEach(actor -> g.drawImage(actor.getSpriteImage(), actor.getX(), actor.getY()));
     }
 }

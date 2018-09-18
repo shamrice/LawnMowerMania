@@ -1,9 +1,13 @@
 package io.github.shamrice.lawnmower.state;
 
+import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.configuration.Configuration;
+import io.github.shamrice.lawnmower.core.graphics.Panel;
 import io.github.shamrice.lawnmower.inventory.Inventory;
 import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import org.newdawn.slick.tiled.TiledMap;
+
+import java.util.List;
 
 public class GameState {
 
@@ -16,6 +20,8 @@ public class GameState {
     private Configuration configuration;
     private Inventory inventory;
     private InventoryItem equippedInventoryItem;
+    private Panel currentPanel;
+    private List<Actor> currentActors;
 
     private GameState() {}
 
@@ -86,5 +92,21 @@ public class GameState {
 
     public void setEquippedInventoryItem(InventoryItem equippedInventoryItem) {
         this.equippedInventoryItem = equippedInventoryItem;
+    }
+
+    public Panel getCurrentPanel() {
+        return currentPanel;
+    }
+
+    public void setCurrentPanel(Panel currentPanel) {
+        this.currentPanel = currentPanel;
+    }
+
+    public List<Actor> getCurrentActors() {
+        return currentActors;
+    }
+
+    public void setCurrentActors(List<Actor> currentActors) {
+        this.currentActors = currentActors;
     }
 }

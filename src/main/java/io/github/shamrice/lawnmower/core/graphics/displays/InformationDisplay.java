@@ -17,31 +17,33 @@ public class InformationDisplay {
 
     public void displayDebug(Graphics g, float delta, PlayerActor player) {
         g.drawString("x: " + player.getX() + " y: " + player.getY() + " delta: " + delta, 100, 1);
-        font.drawString(810, 10, "Score: " + player.getScore());
-        font.drawString(810, 30, "Grass to cut: " + GameState.getInstance().getMowTilesRemaining());
 
     }
 
-    public void displayStamina(PlayerActor player) {
+    public void displayStats(long score) {
+        font.drawString(810, 10, "Score: " + score);
+        font.drawString(810, 30, "Grass to cut: " + GameState.getInstance().getMowTilesRemaining());
+    }
+
+    public void displayStamina(float currentStamina) {
         Color staminaTextColor;
 
-        if (player.getStamina() <= 10)
+        if (currentStamina <= 10)
             staminaTextColor = Color.red;
-        else if (player.getStamina() > 10 && player.getStamina() <= 50)
+        else if (currentStamina > 10 && currentStamina <= 50)
             staminaTextColor = Color.yellow;
-        else if (player.getStamina() > 50 && player.getStamina() <= 75)
+        else if (currentStamina > 50 && currentStamina <= 75)
             staminaTextColor = Color.green;
         else
             staminaTextColor = Color.white;
 
-        font.drawString(810, 50,"Stamina: " + (int)player.getStamina() + "/100", staminaTextColor);
+        font.drawString(810, 50,"Stamina: " + (int)currentStamina + "/100", staminaTextColor);
     }
 
     /**
      * Draws inventory information on left side of screen.
-     * @param g Graphics object to render text with.
      */
-    public void displayInventory(Graphics g) {
+    public void displayInventory() {
 
         int x = 810;
         int y = 100;

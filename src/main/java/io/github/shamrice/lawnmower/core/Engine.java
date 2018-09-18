@@ -5,8 +5,8 @@ import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
 import io.github.shamrice.lawnmower.core.graphics.GraphicsManager;
+import io.github.shamrice.lawnmower.core.graphics.Panel;
 import io.github.shamrice.lawnmower.inventory.Inventory;
-import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import org.apache.log4j.Logger;
@@ -34,6 +34,8 @@ public class Engine extends BasicGame {
     private GraphicsManager graphicsManager;
 
     List<Rectangle> inventoryHitBoxList = new ArrayList<>(); // TODO : add sprites to inventory and use box as click area.
+
+    private GameState state = GameState.getInstance();
 
     private String debugMessage = "";
 
@@ -73,14 +75,21 @@ public class Engine extends BasicGame {
         inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
 
-        GameState state = GameState.getInstance();
+
+        List<Actor> currentActors = new ArrayList<>();
+        currentActors.add(enemyActor);
+        currentActors.add(player);
+
+        state.setCurrentActors(currentActors);
+        //GameState state = GameState.getInstance();
         state.setConfiguration(configuration);
         state.setCurrentTiledMap(1, map);
         state.setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
         state.setRunning(true);
         state.setInventory(inventory);
+        state.setCurrentPanel(Panel.LEVEL);
 
-        graphicsManager = new GraphicsManager(configuration.getTrueTypeFont());
+        graphicsManager = new GraphicsManager(configuration.getTrueTypeFont(), player);
 
         logger.info("Init complete.");
     }
@@ -166,9 +175,10 @@ public class Engine extends BasicGame {
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
 
+        graphicsManager.setGraphics(g);
+        graphicsManager.displayPanel(state.getCurrentPanel(), state.getCurrentActors());
+
         //TODO : image assets need to be built by configuration not hard coded.
-        graphicsManager.displayPlayAreaPanel(g, player, enemyActor);
-        graphicsManager.displayInformationPanel(g, player, delta);
 
     }
 
