@@ -9,6 +9,7 @@ import io.github.shamrice.lawnmower.core.graphics.Panel;
 import io.github.shamrice.lawnmower.inventory.Inventory;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
+import io.github.shamrice.lawnmower.state.LevelState;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
@@ -36,6 +37,7 @@ public class Engine extends BasicGame {
     List<Rectangle> inventoryHitBoxList = new ArrayList<>(); // TODO : add sprites to inventory and use box as click area.
 
     private GameState state = GameState.getInstance();
+    private LevelState levelState = LevelState.getInstance();
 
     private String debugMessage = "";
 
@@ -80,11 +82,12 @@ public class Engine extends BasicGame {
         currentActors.add(enemyActor);
         currentActors.add(player);
 
-        state.setCurrentActors(currentActors);
+        levelState.setCurrentActors(currentActors);
+        levelState.setCurrentTiledMap(1, map);
+        levelState.setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
+
         //GameState state = GameState.getInstance();
         state.setConfiguration(configuration);
-        state.setCurrentTiledMap(1, map);
-        state.setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
         state.setRunning(true);
         state.setInventory(inventory);
         state.setCurrentPanel(Panel.LEVEL);
@@ -154,12 +157,12 @@ public class Engine extends BasicGame {
 
         this.delta = delta;
 
-        if (GameState.getInstance().getMowTilesRemaining() <= 0) {
+        if (levelState.getMowTilesRemaining() <= 0) {
             logger.info("MOW COMPLETE :: Score : " + player.getScore());
             container.exit();
         }
 
-        if (!GameState.getInstance().isRunning() || !player.isAlive())
+        if (!state.isRunning() || !player.isAlive())
             container.exit();
 
         //TODO : move into it's own manager for handling enemy movements
@@ -176,7 +179,7 @@ public class Engine extends BasicGame {
     public void render(GameContainer container, Graphics g) throws SlickException {
 
         graphicsManager.setGraphics(g);
-        graphicsManager.displayPanel(state.getCurrentPanel(), state.getCurrentActors());
+        graphicsManager.displayPanel(state.getCurrentPanel(), levelState.getCurrentActors());
 
         //TODO : image assets need to be built by configuration not hard coded.
 
@@ -191,7 +194,7 @@ public class Engine extends BasicGame {
 
         GameState state = GameState.getInstance();
         //TODO : this should check to make sure the user is pressing on the inventory item in the inventory.
-        state.setEquippedInventoryItem(state.getInventory().useInventoryItem(InventoryItemType.GRASS_SEED));
+        state.getInventory().setEquippedInventoryItem(state.getInventory().useInventoryItem(InventoryItemType.GRASS_SEED));
         logger.debug("Mouse button " + button + " pressed at " + x + ", " + y);
     }
 
@@ -202,10 +205,10 @@ public class Engine extends BasicGame {
         }
 
         GameState state = GameState.getInstance();
-        if (state.getEquippedInventoryItem() != null) {
-            if (collisionHandler.checkMouseCollision(state.getEquippedInventoryItem().getInventoryItemType(), x, y)) {
-                logger.info("Used item " + state.getEquippedInventoryItem().getName() + " at " + x + ", " + y);
-                state.setEquippedInventoryItem(null);
+        if (state.getInventory().getEquippedInventoryItem() != null) {
+            if (collisionHandler.checkMouseCollision(state.getInventory().getEquippedInventoryItem().getInventoryItemType(), x, y)) {
+                logger.info("Used item " + state.getInventory().getEquippedInventoryItem().getName() + " at " + x + ", " + y);
+                state.getInventory().setEquippedInventoryItem(null);
             }
         }
 

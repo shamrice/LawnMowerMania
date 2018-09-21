@@ -3,6 +3,7 @@ package io.github.shamrice.lawnmower.core.graphics.displays;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.state.GameState;
+import io.github.shamrice.lawnmower.state.LevelState;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
@@ -22,7 +23,7 @@ public class InformationDisplay {
 
     public void displayStats(long score) {
         font.drawString(810, 10, "Score: " + score);
-        font.drawString(810, 30, "Grass to cut: " + GameState.getInstance().getMowTilesRemaining());
+        font.drawString(810, 30, "Grass to cut: " + LevelState.getInstance().getMowTilesRemaining());
     }
 
     public void displayStamina(float currentStamina) {
@@ -52,8 +53,8 @@ public class InformationDisplay {
 
         //display equipped item (if any)
         String equippedItemName = "None";
-        if (state.getEquippedInventoryItem() != null) {
-            equippedItemName = state.getEquippedInventoryItem().getName();
+        if (state.getInventory().getEquippedInventoryItem() != null) {
+            equippedItemName = state.getInventory().getEquippedInventoryItem().getName();
         }
         font.drawString(x, y, "Equipped: " + equippedItemName);
         y += 25;

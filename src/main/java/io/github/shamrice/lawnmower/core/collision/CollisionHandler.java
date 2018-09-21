@@ -4,7 +4,7 @@ import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.common.TileType;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
-import io.github.shamrice.lawnmower.state.GameState;
+import io.github.shamrice.lawnmower.state.LevelState;
 import org.apache.log4j.Logger;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -64,7 +64,7 @@ public class CollisionHandler {
 
         Shape tempPlayerShape = new Rectangle(attemptedX, attemptedY, 16,   16);
 
-        TiledMap map = GameState.getInstance().getCurrentTiledMap();
+        TiledMap map = LevelState.getInstance().getCurrentTiledMap();
 
         for (int j = 0; j < collisionMap.length; j++) {
             for (int k = 0; k < collisionMap[j].length; k++) {
@@ -119,8 +119,8 @@ public class CollisionHandler {
 
             if (currentTileId == TileType.CUT_GRASS.getId()) {
                 scoreDelta += 50;
-                GameState.getInstance().decreaseMowTilesRemaining();
-                logger.debug("Num mow tiles remaining: " + GameState.getInstance().getMowTilesRemaining());
+                LevelState.getInstance().decreaseMowTilesRemaining();
+                logger.debug("Num mow tiles remaining: " + LevelState.getInstance().getMowTilesRemaining());
             } else if (currentTileId > TileType.CUT_GRASS.getId()) {
                 scoreDelta -= 25;
             }
@@ -142,7 +142,7 @@ public class CollisionHandler {
     public boolean checkMouseCollision(InventoryItemType itemTypeUsed, int mouseX, int mouseY) {
 
         Shape tempClickShape = new Rectangle(mouseX, mouseY, 16,   16);
-        TiledMap map = GameState.getInstance().getCurrentTiledMap();
+        TiledMap map = LevelState.getInstance().getCurrentTiledMap();
 
         for (int j = 0; j < collisionMap.length; j++) {
             for (int k = 0; k < collisionMap[j].length; k++) {

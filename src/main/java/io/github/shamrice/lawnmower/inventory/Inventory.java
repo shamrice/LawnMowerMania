@@ -7,6 +7,7 @@ import java.util.*;
 public class Inventory {
 
     private Map<InventoryItemType, List<InventoryItem>> inventoryItemMap;
+    private InventoryItem equippedInventoryItem;
     private InventoryItemLookUp inventoryItemLookUp;
 
     public Inventory(InventoryItemLookUp inventoryItemLookUp) {
@@ -101,5 +102,13 @@ public class Inventory {
         }
 
         else return 0;
+    }
+
+    public InventoryItem getEquippedInventoryItem() {
+        return equippedInventoryItem;
+    }
+
+    public void setEquippedInventoryItem(InventoryItem equippedInventoryItem) {
+        this.equippedInventoryItem = equippedInventoryItem;
     }
 }
