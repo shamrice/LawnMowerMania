@@ -10,11 +10,14 @@ public class GameState {
     private static GameState instance = null;
 
     private boolean isRunning = false;
+    private long score;
     private Configuration configuration;
     private Inventory inventory;
     private Panel currentPanel;
 
-    private GameState() {}
+    private GameState() {
+        this.score = 0;
+    }
 
     public static GameState getInstance() {
         if (instance == null) {
@@ -60,4 +63,21 @@ public class GameState {
         this.currentPanel = currentPanel;
     }
 
+    /**
+     *
+     * @return Current score value.
+     */
+    public long getScore() {
+        return score;
+    }
+
+    /**
+     * Update score by the amount specified.
+     * @param delta Amount to update score by.
+     */
+    public void changeScore(int delta) {
+        score += delta;
+        if (score < 0)
+            score = 0;
+    }
 }

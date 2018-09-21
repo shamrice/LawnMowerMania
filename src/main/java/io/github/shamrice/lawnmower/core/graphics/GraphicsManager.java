@@ -4,6 +4,7 @@ import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.core.graphics.displays.InformationDisplay;
 import io.github.shamrice.lawnmower.core.graphics.displays.PlayAreaDisplay;
+import io.github.shamrice.lawnmower.state.GameState;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 
@@ -39,7 +40,7 @@ public class GraphicsManager {
 
     private void displayInformationPanel() {
         //informationDisplay.displayDebug(graphics, delta, playerActor);
-        informationDisplay.displayStats(playerActor.getScore());
+        informationDisplay.displayStats(GameState.getInstance().getScore());
         informationDisplay.displayStamina(playerActor.getStamina());
         informationDisplay.displayInventory();
     }

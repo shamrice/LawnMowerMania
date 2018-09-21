@@ -153,12 +153,14 @@ public class Engine extends BasicGame {
 
         if (!collisionHandler.checkCollision(player, tempStepX, tempStepY)) {
             player.updateXY(tempStepX, tempStepY);
+            collisionHandler.updateMowedTile(player);
+
         }
 
         this.delta = delta;
 
         if (levelState.getMowTilesRemaining() <= 0) {
-            logger.info("MOW COMPLETE :: Score : " + player.getScore());
+            logger.info("MOW COMPLETE :: Score : " + state.getScore());
             container.exit();
         }
 

@@ -6,58 +6,17 @@ public class PlayerActor extends Actor {
 
     private final static float MAX_STAMINA = 100;
 
-    private long score;
-    private int mapX = 0;
-    private int mapY = 0;
+    //private long score;
     private Direction direction = Direction.DOWN;
     private float movementSpeed;
     private float stamina = MAX_STAMINA;
 
-
     public PlayerActor(Image spriteImage, float x, float y, float movementSpeed) {
         super(ActorType.PLAYER, spriteImage, x, y);
-        this.score = 0;
+        //this.score = 0;
         this.movementSpeed = movementSpeed;
     }
 
-    /**
-     *
-     * @return Current score value.
-     */
-    public long getScore() {
-        return score;
-    }
-
-    /**
-     * Update score by the amount specified.
-     * @param delta Amount to update score by.
-     */
-    public void changeScore(int delta) {
-        score += delta;
-        if (score < 0)
-            score = 0;
-    }
-
-    public void setMapXY(int x, int y) {
-        this.mapX = x;
-        this.mapY = y;
-    }
-
-    public int getMapX() {
-        return mapX;
-    }
-
-    public void setMapX(int mapX) {
-        this.mapX = mapX;
-    }
-
-    public int getMapY() {
-        return mapY;
-    }
-
-    public void setMapY(int mapY) {
-        this.mapY = mapY;
-    }
 
     public Direction getDirection() {
         return direction;
@@ -91,4 +50,5 @@ public class PlayerActor extends Actor {
     public float getStamina() {
         return stamina;
     }
+
 }

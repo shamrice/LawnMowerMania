@@ -4,15 +4,16 @@ import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.common.TileType;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
+import io.github.shamrice.lawnmower.state.GameState;
 import io.github.shamrice.lawnmower.state.LevelState;
 import org.apache.log4j.Logger;
+import org.newdawn.slick.Game;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class CollisionHandler {
 
-    private final static int TILE_WIDTH = 32; //TODO : can this be replaced with map.getTileWidth()?
     private final static Logger logger = Logger.getLogger(CollisionHandler.class);
 
     private Rectangle collisionMap[][] = null;
@@ -32,7 +33,7 @@ public class CollisionHandler {
             for (int y = 0; y < map.getHeight(); y++) {
                 int tileId = map.getTileId(x, y, 1);
                 if (tileId > 0) {
-                    collisionMap[x][y] = new Rectangle(x * TILE_WIDTH, y * TILE_WIDTH, 16, 16);
+                    collisionMap[x][y] = new Rectangle(x * map.getTileWidth(), y * map.getTileWidth(), 16, 16);
                     collisionEntries++;
                 }
             }
@@ -56,11 +57,6 @@ public class CollisionHandler {
 
         float attemptedX = player.getX() + deltaX;
         float attemptedY = player.getY() + deltaY;
-        int scoreDelta = 0;
-
-
-        logger.debug("deltaX: " + deltaX + " deltaY: " + deltaY + " x: " + player.getX() + " y: " + player.getY()
-                + " attemptedX: " + attemptedX + " attemptedY: " + attemptedY);
 
         Shape tempPlayerShape = new Rectangle(attemptedX, attemptedY, 16,   16);
 
@@ -74,59 +70,11 @@ public class CollisionHandler {
                         logger.debug("COLLISION : " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
                                 + " - " + collisionMap[j][k].getMaxX() + ", " + collisionMap[j][k].getMaxY());
 
-                        //TODO : flowers collision handled inside of a boolean method for area collision is gross. though
-                        //TODO : looping through this loop multiple times is pretty gross as well. maybe make flowers an
-                        //TODO : object instead of modifying them based on tilemap? (have generic "flower bed" tile underneath.)
-                        if (map.getTileId(j, k, 1) == TileType.FLOWERS.getId()) {
-                            map.setTileId(j, k, 1, TileType.OVER_MOWED_GRASS.getId());
-                            scoreDelta -= 500;
-                        } else {
+                        return handleCollisionWithMapBoundry(j, k);
 
-                            return true;
-                        }
                     }
                 }
             }
-        }
-
-        //TODO : this logic is terrible.. refactor to own method and come up with something better.
-        //TODO : tile ids vary based on tileset... but somehow need to be consistent throughout game....
-        // VERY HACKED way to test grass changing after multiple mows.
-        int mapX = (int)(attemptedX / 32);
-        int mapY = (int)(attemptedY / 32);
-        int currentTileId = map.getTileId(mapX, mapY, 1);
-
-        logger.info("MapXY: " + mapX + ", " + mapY + " :: playerMapXY: " + player.getMapX() + ", " + player.getMapY());
-
-        //make sure player is walking over a new tile and not the one they are already on.
-        if (mapX != player.getMapX() || mapY != player.getMapY()) {
-
-            player.setMapXY(mapX, mapY);
-
-            if (currentTileId < TileType.DEAD_GRASS.getId()) {
-                currentTileId++;
-            }
-
-            if (currentTileId == TileType.UNCUT_GRASS.getId())
-                currentTileId = TileType.CUT_GRASS.getId();
-
-            map.setTileId(
-                    mapX,
-                    mapY,
-                    1,
-                    currentTileId
-            );
-
-            if (currentTileId == TileType.CUT_GRASS.getId()) {
-                scoreDelta += 50;
-                LevelState.getInstance().decreaseMowTilesRemaining();
-                logger.debug("Num mow tiles remaining: " + LevelState.getInstance().getMowTilesRemaining());
-            } else if (currentTileId > TileType.CUT_GRASS.getId()) {
-                scoreDelta -= 25;
-            }
-
-            player.changeScore(scoreDelta);
-
         }
 
         return false;
@@ -192,5 +140,66 @@ public class CollisionHandler {
 
         return tempShape.intersects(tempShape2);
 
+    }
+
+    public void updateMowedTile(PlayerActor player) {
+
+        TiledMap map = LevelState.getInstance().getCurrentTiledMap();
+        int scoreDelta = 0;
+        int previousMapX = player.getPreviousMapX();
+        int previousMapY = player.getPreviousMapY();
+        int currentTileId = map.getTileId(player.getMapX(), player.getMapY(), 1);
+
+        //make sure player is walking over a new tile and not the one they are already on.
+        if (previousMapX != player.getMapX() || previousMapY != player.getMapY()) {
+
+            logger.info("PreviousMapXY: " + previousMapX + ", " + previousMapY +
+                    " :: playerMapXY: " + player.getMapX() + ", " + player.getMapY() +
+                    " :: currentTileId: " + currentTileId);
+
+            if (currentTileId < TileType.DEAD_GRASS.getId()) {
+                currentTileId++;
+            }
+
+            if (currentTileId == TileType.UNCUT_GRASS.getId())
+                currentTileId = TileType.CUT_GRASS.getId();
+
+            map.setTileId(
+                    player.getMapX(),
+                    player.getMapY(),
+                    1,
+                    currentTileId
+            );
+
+            if (currentTileId == TileType.CUT_GRASS.getId()) {
+                scoreDelta += 50;
+                LevelState.getInstance().decreaseMowTilesRemaining();
+                logger.debug("Num mow tiles remaining: " + LevelState.getInstance().getMowTilesRemaining());
+            } else if (currentTileId > TileType.CUT_GRASS.getId()) {
+                scoreDelta -= 25;
+            }
+
+            GameState.getInstance().changeScore(scoreDelta);
+
+        }
+    }
+
+    private boolean handleCollisionWithMapBoundry(int mapX, int mapY) {
+
+        TiledMap map = LevelState.getInstance().getCurrentTiledMap();
+        int currentTileId = map.getTileId(mapX, mapY, 1);
+
+        if (currentTileId == TileType.FLOWERS.getId()) {
+            map.setTileId(mapX, mapY, 1, TileType.OVER_MOWED_GRASS.getId());
+            GameState.getInstance().changeScore(-500);
+            return false;
+
+            //TODO : currently will cause grass to go all the way to dead grass because hit detection is checked every loop.
+        } else if (currentTileId == TileType.OVER_MOWED_GRASS.getId() || currentTileId == TileType.DEAD_GRASS.getId()) {
+            GameState.getInstance().changeScore(-50);
+            return false;
+        }
+
+        return true;
     }
 }

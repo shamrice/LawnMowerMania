@@ -6,6 +6,10 @@ public abstract class Actor {
 
     private float x;
     private float y;
+    private int mapX = 0;
+    private int mapY = 0;
+    private int previousMapX = 0;
+    private int previousMapY = 0;
     private Image spriteImage;
     private ActorType actorType;
     protected boolean isAlive = true;
@@ -49,6 +53,8 @@ public abstract class Actor {
     public void updateXY(float deltaX, float deltaY) {
         x += deltaX;
         y += deltaY;
+        setMapXY((int)(x/ 32), (int)(y / 32));
+
     }
 
     /**
@@ -70,4 +76,37 @@ public abstract class Actor {
     public boolean isAlive() {
         return isAlive;
     }
+
+    public void setMapXY(int x, int y) {
+        this.previousMapX = this.mapX;
+        this.previousMapY = this.mapY;
+        this.mapX = x;
+        this.mapY = y;
+    }
+
+    public int getMapX() {
+        return mapX;
+    }
+
+    public void setMapX(int mapX) {
+        this.mapX = mapX;
+    }
+
+    public int getMapY() {
+        return mapY;
+    }
+
+    public void setMapY(int mapY) {
+        this.mapY = mapY;
+    }
+
+
+    public int getPreviousMapX() {
+        return previousMapX;
+    }
+
+    public int getPreviousMapY() {
+        return previousMapY;
+    }
+
 }
