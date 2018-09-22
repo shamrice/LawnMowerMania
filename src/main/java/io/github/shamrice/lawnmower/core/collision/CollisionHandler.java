@@ -16,6 +16,8 @@ public class CollisionHandler {
 
     private final static Logger logger = Logger.getLogger(CollisionHandler.class);
 
+    private final static int SPRITE_WIDTH = 32;
+    private final static int SPRITE_HEIGHT = 32;
     private Rectangle collisionMap[][] = null;
 
     public CollisionHandler() {}
@@ -33,7 +35,7 @@ public class CollisionHandler {
             for (int y = 0; y < map.getHeight(); y++) {
                 int tileId = map.getTileId(x, y, 1);
                 if (tileId > 0) {
-                    collisionMap[x][y] = new Rectangle(x * map.getTileWidth(), y * map.getTileWidth(), 16, 16);
+                    collisionMap[x][y] = new Rectangle(x * map.getTileWidth(), y * map.getTileWidth(), SPRITE_WIDTH, SPRITE_HEIGHT);
                     collisionEntries++;
                 }
             }
@@ -52,29 +54,23 @@ public class CollisionHandler {
      */
     public boolean checkCollision(PlayerActor player, float deltaX, float deltaY) throws IllegalStateException {
 
+        // TODO : collision is off by 1 map X/Y. Based on player sprite upper left corner position.
+
         if (this.collisionMap == null)
             throw new IllegalStateException("No collision map set up to check collision against.");
 
         float attemptedX = player.getX() + deltaX;
         float attemptedY = player.getY() + deltaY;
+        int attemptedMapX = (int)(attemptedX/ SPRITE_WIDTH);
+        int attemptedMapY = (int)(attemptedY / SPRITE_HEIGHT);
 
-        Shape tempPlayerShape = new Rectangle(attemptedX, attemptedY, 16,   16);
+        Shape tempPlayerShape = new Rectangle(attemptedX, attemptedY, SPRITE_WIDTH,   SPRITE_HEIGHT);
+        Shape collisionTile = collisionMap[attemptedMapX][attemptedMapY];
 
-        TiledMap map = LevelState.getInstance().getCurrentTiledMap();
-
-        for (int j = 0; j < collisionMap.length; j++) {
-            for (int k = 0; k < collisionMap[j].length; k++) {
-                if (collisionMap[j][k] != null) {
-                    if (collisionMap[j][k].intersects(tempPlayerShape)) {
-
-                        logger.debug("COLLISION : " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
-                                + " - " + collisionMap[j][k].getMaxX() + ", " + collisionMap[j][k].getMaxY());
-
-                        return handleCollisionWithMapBoundry(j, k);
-
-                    }
-                }
-            }
+        if (collisionTile != null && collisionTile.intersects(tempPlayerShape)) {
+            logger.debug("attemptedMapXY: " + attemptedMapX + "," + attemptedMapY +
+                    " :: collisionTile " + collisionTile.getX() + "," + collisionTile.getY());
+            return handleCollisionWithMapBoundary(attemptedMapX, attemptedMapY);
         }
 
         return false;
@@ -184,7 +180,11 @@ public class CollisionHandler {
         }
     }
 
-    private boolean handleCollisionWithMapBoundry(int mapX, int mapY) {
+    private boolean handleCollisionWithMapBoundary(int mapX, int mapY) {
+
+        logger.debug("COLLISION : mapXY: " + mapX + "," + mapY
+                + " :: collisionMapMinXY: " + collisionMap[mapX][mapY].getMinX() + ", " + collisionMap[mapX][mapY].getMinY()
+                + " - collisionMapMaxXY: " + collisionMap[mapX][mapY].getMaxX() + ", " + collisionMap[mapX][mapY].getMaxY());
 
         TiledMap map = LevelState.getInstance().getCurrentTiledMap();
         int currentTileId = map.getTileId(mapX, mapY, 1);
