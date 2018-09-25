@@ -7,7 +7,6 @@ import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import io.github.shamrice.lawnmower.state.LevelState;
 import org.apache.log4j.Logger;
-import org.newdawn.slick.Game;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.tiled.TiledMap;
@@ -18,6 +17,7 @@ public class CollisionHandler {
 
     private final static int SPRITE_WIDTH = 32;
     private final static int SPRITE_HEIGHT = 32;
+    private final static int MAP_LAYER = 1;
     private Rectangle collisionMap[][] = null;
 
     public CollisionHandler() {}
@@ -70,14 +70,14 @@ public class CollisionHandler {
         if (collisionTile != null && collisionTile.intersects(tempPlayerShape)) {
             logger.debug("attemptedMapXY: " + attemptedMapX + "," + attemptedMapY +
                     " :: collisionTile " + collisionTile.getX() + "," + collisionTile.getY());
-            return handleCollisionWithMapBoundary(attemptedMapX, attemptedMapY);
+            return handlePlayerActorCollisionWithMapBoundary(attemptedMapX, attemptedMapY);
         }
 
         return false;
     }
 
     /**
-     * Check collision between mouse x,y and map x,y and uses item. TODO : NEEDS TO BE REFACTORED!!!
+     * Check collision between mouse x,y and map x,y and uses item.
      * @param itemTypeUsed Item type being used.
      * @param mouseX Mouse X screen location
      * @param mouseY Mouse Y screen location
@@ -85,43 +85,26 @@ public class CollisionHandler {
      */
     public boolean checkMouseCollision(InventoryItemType itemTypeUsed, int mouseX, int mouseY) {
 
-        Shape tempClickShape = new Rectangle(mouseX, mouseY, 16,   16);
+        int attemptedMapX = mouseX / SPRITE_WIDTH;
+        int attemptedMapY = mouseY / SPRITE_HEIGHT;
+
+        Shape tempClickShape = new Rectangle(mouseX, mouseY, SPRITE_WIDTH,   SPRITE_HEIGHT);
+        Shape collisionShape = collisionMap[attemptedMapX][attemptedMapY];
         TiledMap map = LevelState.getInstance().getCurrentTiledMap();
 
-        for (int j = 0; j < collisionMap.length; j++) {
-            for (int k = 0; k < collisionMap[j].length; k++) {
-                if (collisionMap[j][k] != null) {
-                    if (collisionMap[j][k].intersects(tempClickShape)) {
-
-                        logger.debug("MOUSE COLLISION WITH BORDER: " + collisionMap[j][k].getMinX() + ", " + collisionMap[j][k].getMinY()
-                                + " - " + collisionMap[j][k].getMaxX() + ", " + collisionMap[j][k].getMaxY());
-
-                        return false; //clicked on border. Not level area collision.
-                    }
-                }
-            }
-        }
-
-        //TODO : this has become a weird combination of checking collision and actually using the item that it has collided with..
-
-        float tempX = (float)mouseX / 32;
-        float tempY = (float)mouseY / 32;
-
-        if (tempX > map.getWidth() || tempY > map.getHeight()) {
+        //check if click was outside of map
+        if (attemptedMapX > map.getWidth() || attemptedMapY > map.getHeight()) {
             return false;
-        } else {
-            logger.debug("Mouse collision at: " + (int)tempX + ", " + (int)tempY);
-
-            switch (itemTypeUsed) {
-                case GRASS_SEED:
-                    map.setTileId((int) tempX, (int) tempY, 1, TileType.CUT_GRASS.getId());
-                    return true;
-                default:
-                    logger.info("Cannot use item " + itemTypeUsed.name());
-            }
-
         }
-        return false;
+
+        //check if collision with boundary tile
+        if (collisionShape != null && collisionShape.intersects(tempClickShape)) {
+            logger.debug("MOUSE COLLISION WITH BORDER: " + attemptedMapX + "," + attemptedMapY);
+            return false;
+        }
+
+        //no blocking collisions. return if item was usable on level map.
+        return useInventoryItemOnMap(itemTypeUsed, attemptedMapX, attemptedMapY, map);
     }
 
     /**
@@ -131,11 +114,10 @@ public class CollisionHandler {
      * @return Will return true if there is a collision or false if there is not.
      */
     public boolean checkCollisionBetweenActors(Actor actor1, Actor actor2) {
-        Shape tempShape = new Rectangle(actor1.getX(), actor1.getY(), 16,   16);
-        Shape tempShape2 = new Rectangle(actor2.getX(), actor2.getY(), 16,   16);
+        Shape tempShape = new Rectangle(actor1.getX(), actor1.getY(), SPRITE_WIDTH,   SPRITE_HEIGHT);
+        Shape tempShape2 = new Rectangle(actor2.getX(), actor2.getY(), SPRITE_WIDTH,   SPRITE_HEIGHT);
 
         return tempShape.intersects(tempShape2);
-
     }
 
     public void updateMowedTile(PlayerActor player) {
@@ -180,14 +162,14 @@ public class CollisionHandler {
         }
     }
 
-    private boolean handleCollisionWithMapBoundary(int mapX, int mapY) {
+    private boolean handlePlayerActorCollisionWithMapBoundary(int mapX, int mapY) {
 
         logger.debug("COLLISION : mapXY: " + mapX + "," + mapY
                 + " :: collisionMapMinXY: " + collisionMap[mapX][mapY].getMinX() + ", " + collisionMap[mapX][mapY].getMinY()
                 + " - collisionMapMaxXY: " + collisionMap[mapX][mapY].getMaxX() + ", " + collisionMap[mapX][mapY].getMaxY());
 
         TiledMap map = LevelState.getInstance().getCurrentTiledMap();
-        int currentTileId = map.getTileId(mapX, mapY, 1);
+        int currentTileId = map.getTileId(mapX, mapY, MAP_LAYER);
 
         if (currentTileId == TileType.FLOWERS.getId()) {
             map.setTileId(mapX, mapY, 1, TileType.OVER_MOWED_GRASS.getId());
@@ -201,5 +183,27 @@ public class CollisionHandler {
         }
 
         return true;
+    }
+
+    /**
+     * Uses InventoryItemType on TiledMap at specified x,y coordinates.
+     * @param itemTypeUsed Type of inventory item to use on map.
+     * @param mapX x map coordinates
+     * @param mapY y map coordinates
+     * @param map TiledMap to use the item on at the coordinates specified.
+     * @return Returns true if the item was able to be used and false if it was not.
+     */
+    private boolean useInventoryItemOnMap(InventoryItemType itemTypeUsed, int mapX, int mapY, TiledMap map) {
+        switch (itemTypeUsed) {
+            case GRASS_SEED:
+                //only use grass seed on grass that needs it.
+                if (map.getTileId(mapX, mapY, MAP_LAYER) == TileType.OVER_MOWED_GRASS.getId()
+                    || map.getTileId(mapX, mapY, MAP_LAYER) == TileType.DEAD_GRASS.getId()) {
+                    map.setTileId(mapX, mapY, 1, TileType.CUT_GRASS.getId());
+                    return true;
+                }
+        }
+        logger.info("Cannot use item " + itemTypeUsed.name());
+        return false;
     }
 }

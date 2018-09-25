@@ -39,9 +39,6 @@ public class Engine extends BasicGame {
     private GameState state = GameState.getInstance();
     private LevelState levelState = LevelState.getInstance();
 
-    private String debugMessage = "";
-
-
     public Engine() {
         super("Lawn Mower Mania");
     }
@@ -72,11 +69,12 @@ public class Engine extends BasicGame {
         int collisionEntries = collisionHandler.setUpCollisionMap(map);
 
         Inventory inventory = new Inventory(configuration.getInventoryItemLookUp());
-        // TODO : inventory will eventually be updated via the shop before a level.
-        inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
-        inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
-        inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
 
+        // TODO : inventory will eventually be updated via the shop before a level.
+        for (int i = 0; i < 100; i++) {
+            inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
+        }
+        //inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
 
         List<Actor> currentActors = new ArrayList<>();
         currentActors.add(enemyActor);
@@ -86,7 +84,6 @@ public class Engine extends BasicGame {
         levelState.setCurrentTiledMap(1, map);
         levelState.setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
 
-        //GameState state = GameState.getInstance();
         state.setConfiguration(configuration);
         state.setRunning(true);
         state.setInventory(inventory);
@@ -195,8 +192,13 @@ public class Engine extends BasicGame {
         }
 
         GameState state = GameState.getInstance();
+
         //TODO : this should check to make sure the user is pressing on the inventory item in the inventory.
-        state.getInventory().setEquippedInventoryItem(state.getInventory().useInventoryItem(InventoryItemType.GRASS_SEED));
+        //TODO : this should check to make sure item attempted to be equipped is not the item already equipped. if
+        //TODO : it is, add back the current equipped item to the inventory and equip the new item.
+        if (state.getInventory().getEquippedInventoryItem() == null) {
+            state.getInventory().setEquippedInventoryItem(state.getInventory().useInventoryItem(InventoryItemType.GRASS_SEED));
+        }
         logger.debug("Mouse button " + button + " pressed at " + x + ", " + y);
     }
 
@@ -210,7 +212,6 @@ public class Engine extends BasicGame {
         if (state.getInventory().getEquippedInventoryItem() != null) {
             if (collisionHandler.checkMouseCollision(state.getInventory().getEquippedInventoryItem().getInventoryItemType(), x, y)) {
                 logger.info("Used item " + state.getInventory().getEquippedInventoryItem().getName() + " at " + x + ", " + y);
-                state.getInventory().setEquippedInventoryItem(null);
             }
         }
 
