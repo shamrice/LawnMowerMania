@@ -165,7 +165,8 @@ public class Engine extends BasicGame {
         levelManager.moveEnemies(player, levelState.getCurrentEnemyActors());
 
         //check collision between all current enemies and player.
-        levelState.getCurrentEnemyActors().forEach(
+        // TODO : migth switch back later to regular streamed foreach instead of parallel if threading issues arise.
+        levelState.getCurrentEnemyActors().parallelStream().forEach(
                 enemy -> {
                     if (collisionHandler.checkCollisionBetweenActors(player, enemy)) {
                         logger.info("GAME OVER. You have been killed by a " + enemy.getActorType().name());
