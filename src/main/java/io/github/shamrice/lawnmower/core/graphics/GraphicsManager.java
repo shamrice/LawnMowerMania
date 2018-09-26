@@ -7,7 +7,9 @@ import io.github.shamrice.lawnmower.core.graphics.displays.PlayAreaDisplay;
 import io.github.shamrice.lawnmower.state.GameState;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.geom.Shape;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,6 +19,8 @@ public class GraphicsManager {
     private PlayAreaDisplay playAreaDisplay;
     private Graphics graphics;
     private PlayerActor playerActor;
+
+    private List<Shape> shapesToDraw = new ArrayList<>();
 
     public GraphicsManager(TrueTypeFont font, PlayerActor playerActor) {
         this.informationDisplay = new InformationDisplay(font);
@@ -36,6 +40,11 @@ public class GraphicsManager {
                 displayInformationPanel();
                 break;
         }
+
+        // TODO : debug call. remove when no longer needed.
+        shapesToDraw.forEach(shape -> graphics.draw(shape));
+        shapesToDraw.clear();
+
     }
 
     private void displayInformationPanel() {
@@ -48,6 +57,11 @@ public class GraphicsManager {
     private void displayPlayAreaPanel(List<Actor> actors) {
         playAreaDisplay.displayLevelMap();
         playAreaDisplay.displayActors(graphics, actors);
+    }
+
+    // TODO : debug method. remove when no longer needed.
+    public void debugAddShapeToDraw(Shape shape) {
+        shapesToDraw.add(shape);
     }
 
 }

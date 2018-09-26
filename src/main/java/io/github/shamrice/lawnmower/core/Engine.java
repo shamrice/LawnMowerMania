@@ -6,7 +6,9 @@ import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
 import io.github.shamrice.lawnmower.core.graphics.GraphicsManager;
 import io.github.shamrice.lawnmower.core.graphics.Panel;
+import io.github.shamrice.lawnmower.core.level.LevelManager;
 import io.github.shamrice.lawnmower.inventory.Inventory;
+import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import io.github.shamrice.lawnmower.state.LevelState;
@@ -31,8 +33,9 @@ public class Engine extends BasicGame {
     private boolean isMouseButtonDown = false;
     private CollisionHandler collisionHandler;
     private PlayerActor player;
-    private EnemyActor enemyActor; //TODO : will be moved into it's own manager and will be a list for # of enemies in level.
+    //private EnemyActor enemyActor; //TODO : will be moved into it's own manager and will be a list for # of enemies in level.
     private GraphicsManager graphicsManager;
+    private LevelManager levelManager;
 
     List<Rectangle> inventoryHitBoxList = new ArrayList<>(); // TODO : add sprites to inventory and use box as click area.
 
@@ -48,18 +51,13 @@ public class Engine extends BasicGame {
 
         Configuration configuration = ConfigurationBuilder.buildConfiguration();
 
-        //TODO : move to configuration
-        //java.awt.Font font = new java.awt.Font("Ariel", java.awt.Font.PLAIN, 12);
-        //FONT = new TrueTypeFont(font, true);
-
         // TODO : assets should be based on config and built/displayed per level.
         Image playerImage = new Image(ASSET_LOCATION + "lawnmower1.png");
-        player = new PlayerActor(playerImage, 64, 32, STEP);
+        player = new PlayerActor(playerImage, 64, 50, STEP);
 
         // TODO : assets should be based on config and built/displayed per level.
         Image beeImage = new Image(ASSET_LOCATION + "bee.png");
-        enemyActor = new EnemyActor(ActorType.BEE, beeImage, 716, 256, 100, 0.25f);
-
+        EnemyActor enemyActor = new EnemyActor(ActorType.BEE, beeImage, 716, 256, 100, 0.25f);
 
         // TODO : assets should be based on config and built/displayed per level.
         TiledMap map = new TiledMap(MAPS_LOCATION + "test3.tmx");
@@ -74,7 +72,6 @@ public class Engine extends BasicGame {
         for (int i = 0; i < 100; i++) {
             inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         }
-        //inventory.addInventoryItem(InventoryItemType.NOT_FOUND);
 
         List<Actor> currentActors = new ArrayList<>();
         currentActors.add(enemyActor);
@@ -90,6 +87,7 @@ public class Engine extends BasicGame {
         state.setCurrentPanel(Panel.LEVEL);
 
         graphicsManager = new GraphicsManager(configuration.getTrueTypeFont(), player);
+        levelManager = new LevelManager();
 
         logger.info("Init complete.");
     }
@@ -150,8 +148,7 @@ public class Engine extends BasicGame {
 
         if (!collisionHandler.checkCollision(player, tempStepX, tempStepY)) {
             player.updateXY(tempStepX, tempStepY);
-            collisionHandler.updateMowedTile(player);
-
+            levelManager.updateMowedTile(player);
         }
 
         this.delta = delta;
@@ -164,14 +161,18 @@ public class Engine extends BasicGame {
         if (!state.isRunning() || !player.isAlive())
             container.exit();
 
-        //TODO : move into it's own manager for handling enemy movements
-        moveEnemies();
+        //move enemies in the level.
+        levelManager.moveEnemies(player, levelState.getCurrentEnemyActors());
 
-        //TODO : will have list of enemies to iterate through and check collisions between.
-        if (collisionHandler.checkCollisionBetweenActors(player, enemyActor)) {
-            logger.info("GAME OVER. You have been killed by a " + enemyActor.getActorType().name());
-            GameState.getInstance().setRunning(false);
-        }
+        //check collision between all current enemies and player.
+        levelState.getCurrentEnemyActors().forEach(
+                enemy -> {
+                    if (collisionHandler.checkCollisionBetweenActors(player, enemy)) {
+                        logger.info("GAME OVER. You have been killed by a " + enemy.getActorType().name());
+                        GameState.getInstance().setRunning(false);
+                    }
+                }
+        );
     }
 
     @Override
@@ -209,9 +210,13 @@ public class Engine extends BasicGame {
         }
 
         GameState state = GameState.getInstance();
-        if (state.getInventory().getEquippedInventoryItem() != null) {
-            if (collisionHandler.checkMouseCollision(state.getInventory().getEquippedInventoryItem().getInventoryItemType(), x, y)) {
-                logger.info("Used item " + state.getInventory().getEquippedInventoryItem().getName() + " at " + x + ", " + y);
+        InventoryItem equippedItem = state.getInventory().getEquippedInventoryItem();
+        if (equippedItem != null) {
+            if (collisionHandler.checkMouseCollision(x, y)) {
+                if (levelManager.useInventoryItemOnMap(equippedItem.getInventoryItemType(), x, y)) {
+                    logger.info("Used item " + state.getInventory().getEquippedInventoryItem().getName() + " at " + x + ", " + y);
+                    state.getInventory().setEquippedInventoryItem(null);
+                }
             }
         }
 
@@ -223,25 +228,4 @@ public class Engine extends BasicGame {
         logger.debug("CLICKED:"+x+","+y+" "+clickCount);
     }
 
-
-    //TODO : will be moved into it's own enemy manager. This is temp for debug.
-    private void moveEnemies() {
-
-        float deltaX = 0;
-        float deltaY = 0;
-
-        if (player.getX() > enemyActor.getX()) {
-            deltaX = enemyActor.getMovementSpeed();
-        } else {
-            deltaX = -enemyActor.getMovementSpeed();
-        }
-
-        if (player.getY() > enemyActor.getY()) {
-            deltaY = enemyActor.getMovementSpeed();
-        } else {
-            deltaY = -enemyActor.getMovementSpeed();
-        }
-
-        enemyActor.updateXY(deltaX, deltaY);
-    }
 }

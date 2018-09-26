@@ -1,8 +1,11 @@
 package io.github.shamrice.lawnmower.state;
 
 import io.github.shamrice.lawnmower.actors.Actor;
+import io.github.shamrice.lawnmower.actors.ActorType;
+import io.github.shamrice.lawnmower.actors.EnemyActor;
 import org.newdawn.slick.tiled.TiledMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LevelState {
@@ -54,5 +57,22 @@ public class LevelState {
 
     public void setCurrentActors(List<Actor> currentActors) {
         this.currentActors = currentActors;
+    }
+
+    /**
+     * Gets the list of actors who are enemies on the current level that are alive.
+     * @return Returns a list of EnemyActors
+     */
+    public List<EnemyActor> getCurrentEnemyActors() {
+
+        List<EnemyActor> enemyActors = new ArrayList<>();
+
+        for (Actor actor : currentActors) {
+            if (actor.getActorType() != ActorType.PLAYER && actor.isAlive()) {
+                enemyActors.add((EnemyActor)actor);
+            }
+        }
+
+        return enemyActors;
     }
 }
