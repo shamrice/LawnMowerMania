@@ -1,6 +1,5 @@
 package io.github.shamrice.lawnmower.core.level;
 
-import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.actors.EnemyActor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.common.Constants;
