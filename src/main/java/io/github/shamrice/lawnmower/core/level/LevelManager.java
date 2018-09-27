@@ -57,41 +57,45 @@ public class LevelManager {
         int scoreDelta = 0;
         int previousMapX = player.getPreviousMapX();
         int previousMapY = player.getPreviousMapY();
-        int currentTileId = map.getTileId(player.getMapX(), player.getMapY(), 1);
+        int currentTileId = map.getTileId(player.getMapX(), player.getMapY(), Constants.MAP_LAYER);
 
         //make sure player is walking over a new tile and not the one they are already on.
         if (previousMapX != player.getMapX() || previousMapY != player.getMapY()) {
 
-            logger.info("PreviousMapXY: " + previousMapX + ", " + previousMapY +
+            logger.debug("PreviousMapXY: " + previousMapX + ", " + previousMapY +
                     " :: playerMapXY: " + player.getMapX() + ", " + player.getMapY() +
                     " :: currentTileId: " + currentTileId);
+
 
             if (currentTileId < TileType.DEAD_GRASS.getId()) {
                 currentTileId++;
             }
 
-            if (currentTileId == TileType.UNCUT_GRASS.getId())
+            // set new tile id and set score delta.
+            if (currentTileId == TileType.FLOWERS.getId()) {
+                currentTileId = TileType.OVER_MOWED_GRASS.getId();
+                scoreDelta = ScoreTable.FLOWER_PENALTY;
+            } else if (currentTileId == TileType.UNCUT_GRASS.getId()) {
                 currentTileId = TileType.CUT_GRASS.getId();
+                LevelState.getInstance().decreaseMowTilesRemaining();
+                scoreDelta = ScoreTable.CUT_GRASS_SCORE;
+            } else if (currentTileId == TileType.DEAD_GRASS.getId()) {
+                scoreDelta = ScoreTable.DEAD_GRASS_PENALTY;
+            } else if (currentTileId == TileType.OVER_MOWED_GRASS.getId()) {
+                scoreDelta = ScoreTable.OVER_MOWED_GRASS_PENALTY;
+            }
 
             map.setTileId(
                     player.getMapX(),
                     player.getMapY(),
-                    1,
+                    Constants.MAP_LAYER,
                     currentTileId
             );
 
-            if (currentTileId == TileType.CUT_GRASS.getId()) {
-                scoreDelta += ScoreTable.CUT_GRASS_SCORE;
-                LevelState.getInstance().decreaseMowTilesRemaining();
-                logger.debug("Num mow tiles remaining: " + LevelState.getInstance().getMowTilesRemaining());
-            } else if (currentTileId > TileType.CUT_GRASS.getId()) {
-                scoreDelta -= ScoreTable.OVER_MOWED_GRASS_PENALTY;
-            }
-
             GameState.getInstance().changeScore(scoreDelta);
-
         }
     }
+
 
     //TODO : will be possibly moved into it's own enemy manager where each enemy can be handled based on type.
     public void moveEnemies(PlayerActor player, List<EnemyActor> enemiesToMove) {

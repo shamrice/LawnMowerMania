@@ -31,7 +31,7 @@ public class CollisionHandler {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 int tileId = map.getTileId(x, y, 1);
-                if (tileId > 0) {
+                if (tileId > 0 && tileId != TileType.FLOWERS.getId()) {
                     collisionMap[x][y] = new Rectangle(
                             x * map.getTileWidth(),
                             y * map.getTileWidth(),
@@ -71,8 +71,7 @@ public class CollisionHandler {
         for (int x = 0; x < collisionMap.length; x++) {
             for (int y = 0; y < collisionMap[x].length; y++) {
                 if (collisionMap[x][y] != null && collisionMap[x][y].intersects(tempPlayerShape)) {
-                    //TODO : current issue when in side flower bed, collision are not working correctly!!
-                    return handlePlayerActorCollisionWithMapBoundary(x, y);
+                    return true;
                 }
             }
         }
@@ -120,31 +119,6 @@ public class CollisionHandler {
         Shape tempShape2 = new Rectangle(actor2.getX(), actor2.getY(), Constants.SPRITE_WIDTH,   Constants.SPRITE_HEIGHT);
 
         return tempShape.intersects(tempShape2);
-    }
-
-    /**
-     * Handles what happens when a player collides with a boundary tile.
-     * @param mapX map x location
-     * @param mapY map y location
-     * @return returns true if collision is blocking player movement, false if collision is non blocking
-     */
-    private boolean handlePlayerActorCollisionWithMapBoundary(int mapX, int mapY) {
-
-        TiledMap map = LevelState.getInstance().getCurrentTiledMap();
-        int currentTileId = map.getTileId(mapX, mapY, Constants.MAP_LAYER);
-
-        if (currentTileId == TileType.FLOWERS.getId()) {
-            map.setTileId(mapX, mapY, 1, TileType.OVER_MOWED_GRASS.getId());
-            GameState.getInstance().changeScore(ScoreTable.FLOWER_PENALTY);
-            return false;
-
-            //TODO : currently will cause grass to go all the way to dead grass because hit detection is checked every loop.
-        } else if (currentTileId == TileType.OVER_MOWED_GRASS.getId() || currentTileId == TileType.DEAD_GRASS.getId()) {
-            GameState.getInstance().changeScore(ScoreTable.DEAD_GRASS_PENALTY);
-            return false;
-        }
-
-        return true;
     }
 
 }
