@@ -68,7 +68,7 @@ public class LevelState {
         List<EnemyActor> enemyActors = new ArrayList<>();
 
         for (Actor actor : currentActors) {
-            if (actor.getActorType() != ActorType.PLAYER && actor.isAlive()) {
+            if (actor instanceof EnemyActor) {
                 enemyActors.add((EnemyActor)actor);
             }
         }
