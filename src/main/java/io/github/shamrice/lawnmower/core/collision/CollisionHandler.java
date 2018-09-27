@@ -10,38 +10,49 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.tiled.TiledMap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CollisionHandler {
 
     private final static Logger logger = Logger.getLogger(CollisionHandler.class);
-    private Rectangle collisionMap[][] = null;
+    private List<Rectangle> collisionTileList = null;
 
     public CollisionHandler() {}
 
     /**
      * Sets up collision map used in the check collision method.
      * @param map TiledMap to use to base collision map off of.
-     * @return Returns number of collision entries in generated collision map.
+     * @return Returns number of tiles that should not be mowed on the map
      */
     public int setUpCollisionMap(TiledMap map) {
 
-        int collisionEntries = 0;
-        collisionMap = new Rectangle[map.getWidth()][map.getHeight()];
+        int tilesNotToMow = 0;
+        collisionTileList = new ArrayList<>();
+
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
-                int tileId = map.getTileId(x, y, 1);
-                if (tileId > 0 && tileId != TileType.FLOWERS.getId()) {
-                    collisionMap[x][y] = new Rectangle(
-                            x * map.getTileWidth(),
-                            y * map.getTileWidth(),
-                            Constants.SPRITE_WIDTH,
-                            Constants.SPRITE_HEIGHT);
+                int tileId = map.getTileId(x, y, Constants.MAP_LAYER);
 
-                    collisionEntries++;
+                if (tileId > 0) {
+                    tilesNotToMow++;
+
+                    if (tileId != TileType.FLOWERS.getId()) {
+                        collisionTileList.add(
+                                new Rectangle(
+                                        x * map.getTileWidth(),
+                                        y * map.getTileWidth(),
+                                        Constants.SPRITE_WIDTH,
+                                        Constants.SPRITE_HEIGHT
+                                )
+                        );
+                    }
                 }
             }
         }
 
-        return collisionEntries;
+        return tilesNotToMow;
+
     }
 
     /**
@@ -54,7 +65,7 @@ public class CollisionHandler {
      */
     public boolean checkCollision(PlayerActor player, float deltaX, float deltaY) throws IllegalStateException {
 
-        if (this.collisionMap == null)
+        if (this.collisionTileList == null)
             throw new IllegalStateException("No collision map set up to check collision against.");
 
         float attemptedX = player.getX() + deltaX;
@@ -66,11 +77,9 @@ public class CollisionHandler {
                 Constants.SPRITE_WIDTH - 2,    // -2 so collision box of player is smaller than tile width
                 Constants.SPRITE_HEIGHT - 2);
 
-        for (int x = 0; x < collisionMap.length; x++) {
-            for (int y = 0; y < collisionMap[x].length; y++) {
-                if (collisionMap[x][y] != null && collisionMap[x][y].intersects(tempPlayerShape)) {
-                    return true;
-                }
+        for (Shape collisionShape : collisionTileList) {
+            if (collisionShape.intersects(tempPlayerShape)) {
+                return true;
             }
         }
 
@@ -88,8 +97,7 @@ public class CollisionHandler {
         int attemptedMapX = mouseX / Constants.SPRITE_WIDTH;
         int attemptedMapY = mouseY / Constants.SPRITE_HEIGHT;
 
-        Shape tempClickShape = new Rectangle(mouseX, mouseY, Constants.SPRITE_WIDTH,   Constants.SPRITE_HEIGHT);
-        Shape collisionShape = collisionMap[attemptedMapX][attemptedMapY];
+        Shape tempClickShape = new Rectangle(mouseX, mouseY, 1,   1);
         TiledMap map = LevelState.getInstance().getCurrentTiledMap();
 
         //check if click was outside of map
@@ -97,10 +105,11 @@ public class CollisionHandler {
             return false;
         }
 
-        //check if collision with boundary tile
-        if (collisionShape != null && collisionShape.intersects(tempClickShape)) {
-            logger.debug("MOUSE COLLISION WITH BORDER: " + attemptedMapX + "," + attemptedMapY);
-            return false;
+        for (Shape collisionShape : collisionTileList) {
+            if (collisionShape.intersects(tempClickShape)) {
+                logger.debug("MOUSE COLLISION WITH BORDER: " + attemptedMapX + "," + attemptedMapY);
+                return false;
+            }
         }
 
         return true;

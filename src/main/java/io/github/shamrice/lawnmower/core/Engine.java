@@ -1,6 +1,7 @@
 package io.github.shamrice.lawnmower.core;
 
 import io.github.shamrice.lawnmower.actors.*;
+import io.github.shamrice.lawnmower.common.Constants;
 import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
@@ -64,7 +65,7 @@ public class Engine extends BasicGame {
 
         collisionHandler = new CollisionHandler();
 
-        int collisionEntries = collisionHandler.setUpCollisionMap(map);
+        int numTilesNotToMow = collisionHandler.setUpCollisionMap(map);
 
         Inventory inventory = new Inventory(configuration.getInventoryItemLookUp());
 
@@ -79,7 +80,7 @@ public class Engine extends BasicGame {
 
         levelState.setCurrentActors(currentActors);
         levelState.setCurrentTiledMap(1, map);
-        levelState.setMowTilesRemaining((map.getWidth() * map.getHeight()) - collisionEntries);
+        levelState.setMowTilesRemaining((map.getWidth() * map.getHeight()) - numTilesNotToMow);
 
         state.setConfiguration(configuration);
         state.setRunning(true);
