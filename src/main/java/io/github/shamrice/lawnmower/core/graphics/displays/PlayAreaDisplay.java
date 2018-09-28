@@ -18,8 +18,6 @@ public class PlayAreaDisplay {
                 actor -> {
                     if (actor.getSpriteAnimation() != null) {
                         actor.getSpriteAnimation().draw(actor.getX(), actor.getY());
-                    } else {
-                        g.drawImage(actor.getSpriteImage(), actor.getX(), actor.getY());
                     }
                 });
     }

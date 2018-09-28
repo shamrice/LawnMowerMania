@@ -1,7 +1,6 @@
 package io.github.shamrice.lawnmower.core.collision;
 
 import io.github.shamrice.lawnmower.actors.Actor;
-import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.common.Constants;
 import io.github.shamrice.lawnmower.common.TileType;
 import io.github.shamrice.lawnmower.state.LevelState;

@@ -1,7 +1,6 @@
 package io.github.shamrice.lawnmower.core;
 
 import io.github.shamrice.lawnmower.actors.*;
-import io.github.shamrice.lawnmower.common.Constants;
 import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
@@ -18,25 +17,22 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class Engine extends BasicGame {
 
     private final static Logger logger = Logger.getLogger(Engine.class);
-    private final static float STEP = 1; //32;
 
     // TODO : change this to auto configure.
-    private final static String ASSET_LOCATION = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/assets/";
     private final static String MAPS_LOCATION = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/maps/";
 
     private float delta;
     private boolean isMouseButtonDown = false;
     private CollisionHandler collisionHandler;
     private PlayerActor player;
-    //private EnemyActor enemyActor; //TODO : will be moved into it's own manager and will be a list for # of enemies in level.
     private GraphicsManager graphicsManager;
     private LevelManager levelManager;
 
@@ -52,50 +48,20 @@ public class Engine extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
 
-        Configuration configuration = ConfigurationBuilder.buildConfiguration();
+        Configuration configuration = null;
 
-        // TODO : assets should be based on config and built/displayed per level.
-        Image playerImage1 = new Image(ASSET_LOCATION + "lawnmower0.png");
-        Image playerImage2 = new Image(ASSET_LOCATION + "lawnmower1.png");
-
-        List<Image> playerImages = new LinkedList<>();
-        playerImages.add(playerImage1);
-        playerImages.add(playerImage2);
-
-        Animation playerAnimation = new Animation(playerImages.toArray(new Image[0]), 120);
-
-        player = new PlayerActor(playerAnimation, 64, 50, STEP);
-
-
-        // TODO : assets should be based on config and built/displayed per level.
-        Image beeImage1 = new Image(ASSET_LOCATION + "bee0.png");
-        Image beeImage2 = new Image(ASSET_LOCATION + "bee1.png");
-
-        List<Image> beeImages = new LinkedList<>();
-        beeImages.add(beeImage1);
-        beeImages.add(beeImage2);
-
-        Animation beeAnimation = new Animation(beeImages.toArray(new Image[0]), 100);
-
-        // TODO : assets should be based on config and built/displayed per level.
-        Image dogImage0 = new Image(ASSET_LOCATION + "dog0.png");
-        Image dogImage1 = new Image(ASSET_LOCATION + "dog1.png");
-        Image dogImage2 = new Image(ASSET_LOCATION + "dog2.png");
-
-        List<Image> dogImages = new LinkedList<>();
-        dogImages.add(dogImage0);
-        dogImages.add(dogImage1);
-        dogImages.add(dogImage2);
-        dogImages.add(dogImage1);
-
-        Animation dogAnimation = new Animation(dogImages.toArray(new Image[0]), 100);
-
+        try {
+            configuration = ConfigurationBuilder.buildConfiguration();
+        } catch (IOException ioExc) {
+            logger.error(ioExc.getMessage(), ioExc);
+            logger.error("Failed to build configuration... exiting.");
+            System.exit(-1);
+        }
 
         // TODO : assets should be based on config and built/displayed per level.
         TiledMap map = new TiledMap(MAPS_LOCATION + "test3.tmx");
 
         collisionHandler = new CollisionHandler();
-
         int numTilesNotToMow = collisionHandler.setUpCollisionMap(map);
 
         Inventory inventory = new Inventory(configuration.getInventoryItemLookUp());
@@ -105,8 +71,11 @@ public class Engine extends BasicGame {
             inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         }
 
-        // TODO : currently debug building enemies randomly
+        // TODO : currently debug building enemies randomly. should be loaded from level configuration
         List<Actor> currentActors = new ArrayList<>();
+
+        player = new PlayerActor(configuration.getActorConfiguration(ActorType.PLAYER), 64, 50);
+
         currentActors.add(player);
 
         for (int i = 0; i < 5; i++) {
@@ -115,17 +84,13 @@ public class Engine extends BasicGame {
             int y = random.nextInt(500) + 200;
 
             ActorType enemyType = ActorType.BEE;
-            float movementSpeed = 0.25f;
-            Animation animation = beeAnimation;
 
             boolean isDog = random.nextBoolean();
             if (isDog) {
                 enemyType = ActorType.DOG;
-                movementSpeed = 0.35f;
-                animation = dogAnimation;
             }
 
-            EnemyActor enemyActor = new EnemyActor(enemyType, animation, x, y, 100, movementSpeed);
+            EnemyActor enemyActor = new EnemyActor(configuration.getActorConfiguration(enemyType), x, y);
             currentActors.add(enemyActor);
         }
 
@@ -174,12 +139,12 @@ public class Engine extends BasicGame {
 
         if (userInput.isKeyDown(Input.KEY_SPACE)) {
             if (player.useStamina(1)) {
-                playerSpeed *= 1.75;
-                player.setSpriteAnimationFrameDuration(80);
+                playerSpeed *= player.getMovementSpeedMultiplier();
+                player.setSpriteAnimationFrameDuration(player.getRunningFrameDuration());
             }
         } else if (!userInput.isKeyDown(Input.KEY_SPACE)) {
             player.recoverStamina(0.2f);
-            player.setSpriteAnimationFrameDuration(120);
+            player.setSpriteAnimationFrameDuration(player.getDefaultFrameDuration());
         }
 
         float tempStepX = 0;
@@ -219,7 +184,6 @@ public class Engine extends BasicGame {
         levelManager.moveEnemies(collisionHandler, player, levelState.getCurrentEnemyActors());
 
         //check collision between all current enemies and player.
-        // TODO : migth switch back later to regular streamed foreach instead of parallel if threading issues arise.
         levelState.getCurrentEnemyActors().parallelStream().forEach(
                 enemy -> {
                     if (collisionHandler.checkCollisionBetweenActors(player, enemy)) {
@@ -232,12 +196,8 @@ public class Engine extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-
         graphicsManager.setGraphics(g);
         graphicsManager.displayPanel(state.getCurrentPanel(), levelState.getCurrentActors());
-
-        //TODO : image assets need to be built by configuration not hard coded.
-
     }
 
 

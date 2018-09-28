@@ -1,5 +1,6 @@
 package io.github.shamrice.lawnmower.actors;
 
+import io.github.shamrice.lawnmower.configuration.actors.ActorConfiguration;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 
@@ -11,22 +12,13 @@ public abstract class Actor {
     private int mapY = 0;
     private int previousMapX = 0;
     private int previousMapY = 0;
-    private Image spriteImage;
-    private ActorType actorType;
     protected boolean isAlive = true;
-    private Animation spriteAnimation;
     private int previousSpriteAnimationDuration = 120;
+    private ActorConfiguration actorConfiguration;
 
-    Actor(ActorType actorType, Image spriteImage, float x, float y) {
-        this.actorType = actorType;
-        this.spriteImage = spriteImage;
-        this.x = x;
-        this.y = y;
-    }
 
-    Actor(ActorType actorType, Animation spriteAnimation, float x, float y) {
-        this.actorType = actorType;
-        this.spriteAnimation = spriteAnimation;
+    Actor(ActorConfiguration actorConfiguration, float x, float y) {
+        this.actorConfiguration = actorConfiguration;
         this.x = x;
         this.y = y;
     }
@@ -64,19 +56,10 @@ public abstract class Actor {
         x += deltaX;
         y += deltaY;
         setMapXY((int)(x/ 32), (int)(y / 32));
-
-    }
-
-    /**
-     *
-     * @return get sprite image for actor
-     */
-    public Image getSpriteImage() {
-        return spriteImage;
     }
 
     public ActorType getActorType() {
-        return actorType;
+        return actorConfiguration.getActorType();
     }
 
     /**
@@ -120,22 +103,46 @@ public abstract class Actor {
     }
 
     public Animation getSpriteAnimation() {
-        return spriteAnimation;
+        return actorConfiguration.getAnimation();
     }
 
     public void setSpriteAnimationFrameDuration(int duration) {
 
         //only update duration if it is different than what is already set.
-        if (duration != spriteAnimation.getDuration(0)) {
-            previousSpriteAnimationDuration = spriteAnimation.getDuration(0);
+        if (duration != actorConfiguration.getAnimation().getDuration(0)) {
+            previousSpriteAnimationDuration = actorConfiguration.getAnimation().getDuration(0);
 
-            for (int i = 0; i < spriteAnimation.getFrameCount(); i++) {
-                spriteAnimation.setDuration(i, duration);
+            for (int i = 0; i < actorConfiguration.getAnimation().getFrameCount(); i++) {
+                actorConfiguration.getAnimation().setDuration(i, duration);
             }
         }
     }
 
     public int getPreviousSpriteAnimationDuration() {
         return previousSpriteAnimationDuration;
+    }
+
+    public boolean isBlockedByLevelBoundaries() {
+        return actorConfiguration.isBoundaryBlocked();
+    }
+
+    /**
+     * Gets speed of which enemy should move in the level.
+     * @return The amount of distance an enemy should move per frame.
+     */
+    public float getMovementSpeed() {
+        return actorConfiguration.getMovementSpeed();
+    }
+
+    public float getMovementSpeedMultiplier() {
+        return actorConfiguration.getMovementSpeedMultiplier();
+    }
+
+    public int getDefaultFrameDuration() {
+        return actorConfiguration.getDefaultFrameDuration();
+    }
+
+    public int getRunningFrameDuration() {
+        return actorConfiguration.getRunningFrameDuration();
     }
 }

@@ -1,23 +1,14 @@
 package io.github.shamrice.lawnmower.actors;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
+import io.github.shamrice.lawnmower.configuration.actors.ActorConfiguration;
 
 public class EnemyActor extends Actor {
 
     private int currentHealth;
-    private float movementSpeed;
 
-    public EnemyActor(ActorType actorType, Image spriteImage, float x, float y, int currentHealth, float movementSpeed) {
-        super(actorType, spriteImage, x, y);
-        this.currentHealth = currentHealth;
-        this.movementSpeed = movementSpeed;
-    }
-
-    public EnemyActor(ActorType actorType, Animation spriteAnimation, float x, float y, int currentHealth, float movementSpeed) {
-        super(actorType, spriteAnimation, x, y);
-        this.currentHealth = currentHealth;
-        this.movementSpeed = movementSpeed;
+    public EnemyActor(ActorConfiguration configuration, float x, float y) {
+        super(configuration, x, y);
+        this.currentHealth = configuration.getHealth();
     }
 
     /**
@@ -33,22 +24,4 @@ public class EnemyActor extends Actor {
         }
     }
 
-    public boolean isBlockedByLevelBoundaries() {
-        switch (getActorType()) {
-            case DOG:
-                return true;
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * Gets speed of which enemy should move in the level.
-     * @return The amount of distance an enemy should move per frame.
-     */
-    public float getMovementSpeed() {
-        return movementSpeed;
-    }
 }

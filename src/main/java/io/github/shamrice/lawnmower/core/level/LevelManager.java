@@ -111,8 +111,8 @@ public class LevelManager {
             //TODO : configurable "enemy close" speed increase instead of hardcoded.
             float speedMultiplier = 1f;
             if (distance < 200) {
-                speedMultiplier = 1.75f;
-                enemyActor.setSpriteAnimationFrameDuration(80); //TODO : not sure how i feel about this getting called so much...
+                speedMultiplier = enemyActor.getMovementSpeedMultiplier();
+                enemyActor.setSpriteAnimationFrameDuration(enemyActor.getRunningFrameDuration()); //TODO : not sure how i feel about this getting called so much...
             } else {
                 enemyActor.setSpriteAnimationFrameDuration(enemyActor.getPreviousSpriteAnimationDuration());
             }
