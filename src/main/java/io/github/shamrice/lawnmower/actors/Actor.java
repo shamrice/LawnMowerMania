@@ -1,8 +1,8 @@
 package io.github.shamrice.lawnmower.actors;
 
+import io.github.shamrice.lawnmower.common.Constants;
 import io.github.shamrice.lawnmower.configuration.actors.ActorConfiguration;
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
 
 public abstract class Actor {
 
@@ -15,7 +15,6 @@ public abstract class Actor {
     protected boolean isAlive = true;
     private int previousSpriteAnimationDuration = 120;
     private ActorConfiguration actorConfiguration;
-
 
     Actor(ActorConfiguration actorConfiguration, float x, float y) {
         this.actorConfiguration = actorConfiguration;
@@ -55,7 +54,7 @@ public abstract class Actor {
     public void updateXY(float deltaX, float deltaY) {
         x += deltaX;
         y += deltaY;
-        setMapXY((int)(x/ 32), (int)(y / 32));
+        setMapXY((int)(x / Constants.SPRITE_WIDTH), (int)(y / Constants.SPRITE_HEIGHT));
     }
 
     public ActorType getActorType() {

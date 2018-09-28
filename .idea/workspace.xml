@@ -8,14 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e2128875-cb76-4f0b-8073-5156a8f7fd04" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/EnemyActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/EnemyActor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/PlayerActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/PlayerActor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/collision/CollisionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/collision/CollisionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/displays/PlayAreaDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/displays/PlayAreaDisplay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/level/LevelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/level/LevelManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config/config.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -24,39 +16,6 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/src/main/resources/config/config.properties">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="135">
-                    <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/actors/ActorConfiguration.java">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="114">
-                    <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
-                    <folding>
-                      <element signature="imports" expanded="true" />
-                      <element signature="e#1191#1192#0" expanded="true" />
-                      <element signature="e#1223#1224#0" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="618603337">
@@ -76,7 +35,7 @@
         <counts>
           <entry key="MF" value="1" />
           <entry key="class" value="8" />
-          <entry key="java" value="111" />
+          <entry key="java" value="112" />
           <entry key="png" value="1" />
           <entry key="properties" value="12" />
           <entry key="tmx" value="1" />
@@ -87,7 +46,7 @@
         <counts>
           <entry key="CLASS" value="8" />
           <entry key="Image" value="1" />
-          <entry key="JAVA" value="111" />
+          <entry key="JAVA" value="112" />
           <entry key="Manifest" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="Properties" value="12" />
@@ -97,16 +56,16 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="26" />
-          <entry key="java" value="37884" />
-          <entry key="properties" value="1498" />
+          <entry key="java" value="37917" />
+          <entry key="properties" value="1501" />
           <entry key="xml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="37884" />
+          <entry key="JAVA" value="37917" />
           <entry key="PLAIN_TEXT" value="26" />
-          <entry key="Properties" value="1498" />
+          <entry key="Properties" value="1501" />
           <entry key="XML" value="2" />
         </counts>
       </usages-collector>
@@ -114,23 +73,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2745">
-              <caret line="185" column="65" selection-start-line="185" selection-start-column="65" selection-end-line="185" selection-end-column="65" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-672">
-              <caret line="58" column="46" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
+            <state relative-caret-position="438">
+              <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3555#3556#0" expanded="true" />
@@ -142,6 +89,15 @@
                 <element signature="e#4025#4026#0" expanded="true" />
                 <element signature="e#4092#4093#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/common/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -224,7 +180,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="540">
@@ -287,13 +243,13 @@
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/actors/EnemyActorConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/config/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/EnemyActor.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/PlayerActor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/level/LevelManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/displays/PlayAreaDisplay.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/config/config.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java" />
       </list>
     </option>
   </component>
@@ -467,7 +423,7 @@
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="lawnmower" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/java/io/github/shamrice/lawnmower/common/TileType.java" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538166278992" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538169719331" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -516,6 +472,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="881" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23888092" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -749,13 +706,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/common/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/ActorType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -778,31 +728,6 @@
             <element signature="e#877#878#0" expanded="true" />
             <element signature="e#919#920#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-672">
-          <caret line="58" column="46" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3555#3556#0" expanded="true" />
-            <element signature="e#3616#3617#0" expanded="true" />
-            <element signature="e#3800#3801#0" expanded="true" />
-            <element signature="e#3870#3871#0" expanded="true" />
-            <element signature="e#3914#3915#0" expanded="true" />
-            <element signature="e#3981#3982#0" expanded="true" />
-            <element signature="e#4025#4026#0" expanded="true" />
-            <element signature="e#4092#4093#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/config/config.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -898,6 +823,38 @@
             <element signature="imports" expanded="true" />
             <element signature="e#1191#1192#0" expanded="true" />
             <element signature="e#1223#1224#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/config/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="37" column="26" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/common/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3555#3556#0" expanded="true" />
+            <element signature="e#3616#3617#0" expanded="true" />
+            <element signature="e#3800#3801#0" expanded="true" />
+            <element signature="e#3870#3871#0" expanded="true" />
+            <element signature="e#3914#3915#0" expanded="true" />
+            <element signature="e#3981#3982#0" expanded="true" />
+            <element signature="e#4025#4026#0" expanded="true" />
+            <element signature="e#4092#4093#0" expanded="true" />
           </folding>
         </state>
       </provider>
