@@ -19,6 +19,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Engine extends BasicGame {
@@ -53,12 +54,30 @@ public class Engine extends BasicGame {
         Configuration configuration = ConfigurationBuilder.buildConfiguration();
 
         // TODO : assets should be based on config and built/displayed per level.
-        Image playerImage = new Image(ASSET_LOCATION + "lawnmower1.png");
-        player = new PlayerActor(playerImage, 64, 50, STEP);
+        Image playerImage1 = new Image(ASSET_LOCATION + "lawnmower1.png");
+        Image playerImage2 = new Image(ASSET_LOCATION + "lawnmower2.png");
+
+        List<Image> playerImages = new LinkedList<>();
+        playerImages.add(playerImage1);
+        playerImages.add(playerImage2);
+
+        Animation playerAnimation = new Animation(playerImages.toArray(new Image[0]), 120);
+
+        player = new PlayerActor(playerAnimation, 64, 50, STEP);
+
 
         // TODO : assets should be based on config and built/displayed per level.
-        Image beeImage = new Image(ASSET_LOCATION + "bee.png");
-        EnemyActor enemyActor = new EnemyActor(ActorType.BEE, beeImage, 716, 256, 100, 0.25f);
+        Image beeImage1 = new Image(ASSET_LOCATION + "bee.png");
+        Image beeImage2 = new Image(ASSET_LOCATION + "bee2.png");
+
+        List<Image> beeImages = new LinkedList<>();
+        beeImages.add(beeImage1);
+        beeImages.add(beeImage2);
+
+        Animation beeAnimation = new Animation(beeImages.toArray(new Image[0]), 100);
+
+
+        EnemyActor enemyActor = new EnemyActor(ActorType.BEE, beeAnimation, 716, 256, 100, 0.25f);
 
         // TODO : assets should be based on config and built/displayed per level.
         TiledMap map = new TiledMap(MAPS_LOCATION + "test3.tmx");
@@ -124,9 +143,11 @@ public class Engine extends BasicGame {
         if (userInput.isKeyDown(Input.KEY_SPACE)) {
             if (player.useStamina(1)) {
                 playerSpeed *= 1.75;
+                player.setSpriteAnimationFrameDuration(80);
             }
         } else if (!userInput.isKeyDown(Input.KEY_SPACE)) {
             player.recoverStamina(0.2f);
+            player.setSpriteAnimationFrameDuration(120);
         }
 
         float tempStepX = 0;

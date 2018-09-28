@@ -1,5 +1,6 @@
 package io.github.shamrice.lawnmower.actors;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 
 public abstract class Actor {
@@ -13,10 +14,19 @@ public abstract class Actor {
     private Image spriteImage;
     private ActorType actorType;
     protected boolean isAlive = true;
+    private Animation spriteAnimation;
+    private int previousSpriteAnimationDuration = 120;
 
-    public Actor(ActorType actorType, Image spriteImage, float x, float y) {
+    Actor(ActorType actorType, Image spriteImage, float x, float y) {
         this.actorType = actorType;
         this.spriteImage = spriteImage;
+        this.x = x;
+        this.y = y;
+    }
+
+    Actor(ActorType actorType, Animation spriteAnimation, float x, float y) {
+        this.actorType = actorType;
+        this.spriteAnimation = spriteAnimation;
         this.x = x;
         this.y = y;
     }
@@ -109,4 +119,23 @@ public abstract class Actor {
         return previousMapY;
     }
 
+    public Animation getSpriteAnimation() {
+        return spriteAnimation;
+    }
+
+    public void setSpriteAnimationFrameDuration(int duration) {
+
+        //only update duration if it is different than what is already set.
+        if (duration != spriteAnimation.getDuration(0)) {
+            previousSpriteAnimationDuration = spriteAnimation.getDuration(0);
+
+            for (int i = 0; i < spriteAnimation.getFrameCount(); i++) {
+                spriteAnimation.setDuration(i, duration);
+            }
+        }
+    }
+
+    public int getPreviousSpriteAnimationDuration() {
+        return previousSpriteAnimationDuration;
+    }
 }

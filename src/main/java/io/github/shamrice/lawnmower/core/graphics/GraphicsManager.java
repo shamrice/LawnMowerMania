@@ -50,6 +50,7 @@ public class GraphicsManager {
     private void displayInformationPanel() {
         //informationDisplay.displayDebug(graphics, delta, playerActor);
         informationDisplay.displayStats(GameState.getInstance().getScore());
+        //TODO : come up with a better way than to have to own a copy of the whole player object just for stamina display
         informationDisplay.displayStamina(playerActor.getStamina());
         informationDisplay.displayInventory();
     }

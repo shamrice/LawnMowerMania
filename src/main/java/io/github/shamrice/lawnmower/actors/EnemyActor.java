@@ -1,5 +1,6 @@
 package io.github.shamrice.lawnmower.actors;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 
 public class EnemyActor extends Actor {
@@ -9,6 +10,12 @@ public class EnemyActor extends Actor {
 
     public EnemyActor(ActorType actorType, Image spriteImage, float x, float y, int currentHealth, float movementSpeed) {
         super(actorType, spriteImage, x, y);
+        this.currentHealth = currentHealth;
+        this.movementSpeed = movementSpeed;
+    }
+
+    public EnemyActor(ActorType actorType, Animation spriteAnimation, float x, float y, int currentHealth, float movementSpeed) {
+        super(actorType, spriteAnimation, x, y);
         this.currentHealth = currentHealth;
         this.movementSpeed = movementSpeed;
     }

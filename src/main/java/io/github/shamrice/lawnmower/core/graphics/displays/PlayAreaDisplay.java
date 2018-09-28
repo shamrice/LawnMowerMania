@@ -13,6 +13,14 @@ public class PlayAreaDisplay {
     }
 
     public void displayActors(Graphics g, List<Actor> actors) {
-        actors.forEach(actor -> g.drawImage(actor.getSpriteImage(), actor.getX(), actor.getY()));
+
+        actors.forEach(
+                actor -> {
+                    if (actor.getSpriteAnimation() != null) {
+                        actor.getSpriteAnimation().draw(actor.getX(), actor.getY());
+                    } else {
+                        g.drawImage(actor.getSpriteImage(), actor.getX(), actor.getY());
+                    }
+                });
     }
 }

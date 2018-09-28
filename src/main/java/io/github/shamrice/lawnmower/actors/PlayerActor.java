@@ -1,22 +1,25 @@
 package io.github.shamrice.lawnmower.actors;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 
 public class PlayerActor extends Actor {
 
     private final static float MAX_STAMINA = 100;
 
-    //private long score;
     private Direction direction = Direction.DOWN;
     private float movementSpeed;
     private float stamina = MAX_STAMINA;
 
     public PlayerActor(Image spriteImage, float x, float y, float movementSpeed) {
         super(ActorType.PLAYER, spriteImage, x, y);
-        //this.score = 0;
         this.movementSpeed = movementSpeed;
     }
 
+    public PlayerActor(Animation spriteAnimation, float x, float y, float movementSpeed) {
+        super(ActorType.PLAYER, spriteAnimation, x, y);
+        this.movementSpeed = movementSpeed;
+    }
 
     public Direction getDirection() {
         return direction;

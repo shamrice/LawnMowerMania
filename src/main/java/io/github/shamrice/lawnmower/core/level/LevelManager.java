@@ -13,6 +13,8 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.List;
 
+import static java.lang.Math.exp;
+
 public class LevelManager {
 
     private final static Logger logger = Logger.getLogger(LevelManager.class);
@@ -101,19 +103,32 @@ public class LevelManager {
 
         for (EnemyActor enemyActor : enemiesToMove) {
 
-            float deltaX = 0;
-            float deltaY = 0;
+            //calculate the distance between the enemy and the player
+            //formula: squareRoot((x2 - x1)^2 + (y2 - y1)^2)
+            double xDiff = player.getX() - enemyActor.getX();
+            double yDiff = player.getY() - enemyActor.getY();
+            double distance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 
-            if (player.getX() > enemyActor.getX()) {
-                deltaX = enemyActor.getMovementSpeed();
+            //TODO : configurable "enemy close" speed increase instead of hardcoded.
+            float speedMultiplier = 1f;
+            if (distance < 200) {
+                speedMultiplier = 1.75f;
+                enemyActor.setSpriteAnimationFrameDuration(80); //TODO : not sure how i feel about this getting called so much...
             } else {
-                deltaX = -enemyActor.getMovementSpeed();
+                enemyActor.setSpriteAnimationFrameDuration(enemyActor.getPreviousSpriteAnimationDuration());
             }
 
-            if (player.getY() > enemyActor.getY()) {
-                deltaY = enemyActor.getMovementSpeed();
-            } else {
-                deltaY = -enemyActor.getMovementSpeed();
+            //default setting delta as if player values are greater.
+            float deltaX = enemyActor.getMovementSpeed() * speedMultiplier;
+            float deltaY = enemyActor.getMovementSpeed() * speedMultiplier;
+
+            //if either is not true, inverse delta.
+            if (player.getX() < enemyActor.getX()) {
+                deltaX = -deltaX;
+            }
+
+            if (player.getY() < enemyActor.getY()) {
+                deltaY = -deltaY;
             }
 
             enemyActor.updateXY(deltaX, deltaY);
