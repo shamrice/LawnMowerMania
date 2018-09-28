@@ -4,9 +4,11 @@ package io.github.shamrice.lawnmower.configuration;
 
 import io.github.shamrice.lawnmower.actors.ActorType;
 import io.github.shamrice.lawnmower.configuration.actors.ActorConfiguration;
+import io.github.shamrice.lawnmower.configuration.levels.LevelConfiguration;
 import io.github.shamrice.lawnmower.inventory.lookup.InventoryItemLookUp;
 import org.newdawn.slick.TrueTypeFont;
 
+import java.util.List;
 import java.util.Map;
 
 public class Configuration {
@@ -14,13 +16,16 @@ public class Configuration {
     private InventoryItemLookUp inventoryItemLookUp;
     private TrueTypeFont trueTypeFont;
     private Map<ActorType, ActorConfiguration> actorConfigurationMap;
+    private List<LevelConfiguration> levelConfiguration;
 
     public Configuration(InventoryItemLookUp inventoryItemLookUp, TrueTypeFont trueTypeFont,
-                         Map<ActorType, ActorConfiguration> actorConfigurationMap) {
+                         Map<ActorType, ActorConfiguration> actorConfigurationMap,
+                         List<LevelConfiguration> levelConfiguration) {
 
         this.inventoryItemLookUp = inventoryItemLookUp;
         this.trueTypeFont = trueTypeFont;
         this.actorConfigurationMap = actorConfigurationMap;
+        this.levelConfiguration = levelConfiguration;
     }
 
     /**
@@ -37,5 +42,13 @@ public class Configuration {
 
     public ActorConfiguration getActorConfiguration(ActorType actorType) {
         return actorConfigurationMap.get(actorType);
+    }
+
+    public LevelConfiguration getLevelConfiguration(int levelNumber) {
+
+        if (levelNumber > levelConfiguration.size())
+            levelNumber = 0;
+
+        return levelConfiguration.get(levelNumber);
     }
 }

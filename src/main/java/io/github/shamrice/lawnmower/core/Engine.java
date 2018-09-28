@@ -3,6 +3,7 @@ package io.github.shamrice.lawnmower.core;
 import io.github.shamrice.lawnmower.actors.*;
 import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
+import io.github.shamrice.lawnmower.configuration.levels.LevelEnemyConfiguration;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
 import io.github.shamrice.lawnmower.core.graphics.GraphicsManager;
 import io.github.shamrice.lawnmower.core.graphics.Panel;
@@ -20,14 +21,10 @@ import org.newdawn.slick.tiled.TiledMap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Engine extends BasicGame {
 
     private final static Logger logger = Logger.getLogger(Engine.class);
-
-    // TODO : change this to auto configure.
-    private final static String MAPS_LOCATION = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/maps/";
 
     private float delta;
     private boolean isMouseButtonDown = false;
@@ -58,12 +55,6 @@ public class Engine extends BasicGame {
             System.exit(-1);
         }
 
-        // TODO : assets should be based on config and built/displayed per level.
-        TiledMap map = new TiledMap(MAPS_LOCATION + "test3.tmx");
-
-        collisionHandler = new CollisionHandler();
-        int numTilesNotToMow = collisionHandler.setUpCollisionMap(map);
-
         Inventory inventory = new Inventory(configuration.getInventoryItemLookUp());
 
         // TODO : inventory will eventually be updated via the shop before a level.
@@ -71,31 +62,28 @@ public class Engine extends BasicGame {
             inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         }
 
-        // TODO : currently debug building enemies randomly. should be loaded from level configuration
+        // TODO : move to some sort of level set up method instead.
+        TiledMap map = new TiledMap(configuration.getLevelConfiguration(0).getFilename());
+
+        collisionHandler = new CollisionHandler();
+        int numTilesNotToMow = collisionHandler.setUpCollisionMap(map);
+
         List<Actor> currentActors = new ArrayList<>();
 
         player = new PlayerActor(configuration.getActorConfiguration(ActorType.PLAYER), 64, 50);
-
         currentActors.add(player);
 
-        for (int i = 0; i < 5; i++) {
-            Random random = new Random();
-            int x = random.nextInt(500) + 200;
-            int y = random.nextInt(500) + 200;
-
-            ActorType enemyType = ActorType.BEE;
-
-            boolean isDog = random.nextBoolean();
-            if (isDog) {
-                enemyType = ActorType.DOG;
-            }
-
-            EnemyActor enemyActor = new EnemyActor(configuration.getActorConfiguration(enemyType), x, y);
+        for (LevelEnemyConfiguration enemyConfiguration : configuration.getLevelConfiguration(0).getLevelEnemyConfigurations()) {
+            EnemyActor enemyActor = new EnemyActor(
+                    configuration.getActorConfiguration(enemyConfiguration.getActorType()),
+                    enemyConfiguration.getX(),
+                    enemyConfiguration.getY()
+            );
             currentActors.add(enemyActor);
         }
 
         levelState.setCurrentActors(currentActors);
-        levelState.setCurrentTiledMap(1, map);
+        levelState.setCurrentTiledMap(0, map);
         levelState.setMowTilesRemaining((map.getWidth() * map.getHeight()) - numTilesNotToMow);
 
         state.setConfiguration(configuration);
@@ -174,6 +162,7 @@ public class Engine extends BasicGame {
 
         if (levelState.getMowTilesRemaining() <= 0) {
             logger.info("MOW COMPLETE :: Score : " + state.getScore());
+            //TODO : increase level, show score, shop and then load new level and reset display.
             container.exit();
         }
 

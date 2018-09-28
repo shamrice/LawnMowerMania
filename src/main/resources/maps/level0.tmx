@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" nextobjectid="1">
- <tileset firstgid="1" source="test_tileset.tsx"/>
+ <tileset firstgid="1" source="game_tileset.tsx"/>
  <layer name="Tile Layer 1" width="25" height="25">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA+2SQRLAIAwC7f8/3XtHIKRUPTQzniRuCI6xpq4Pj8vozPXUK5+MoXqcGZi2syt1jxhvfLDd/AzOqGbDtOxPOvkjj+7spzJm+0kwUA5qhso7KxlIh7SqOn2VLJxdpU6XUakEI+GDvdNhKL+JPHYyUnUDewVHMcQJAAA=

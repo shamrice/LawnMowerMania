@@ -7,8 +7,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2128875-cb76-4f0b-8073-5156a8f7fd04" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/game.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/lawn.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/lawn.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/lawn.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/level1.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/test2.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/test3.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/maps/level0.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/test_tileset.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/maps/game_tileset.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/untitled.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/game.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/lawn.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/lawn.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/lawn.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/level1.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/test2.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/test3.tmx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/test_tileset.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/maps/untitled.tmx" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,6 +39,25 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DockManager">
+    <window id="3">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/main/resources/config/level.properties">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="165">
+                    <caret line="11" column="21" lean-forward="true" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="618603337">
@@ -35,37 +77,40 @@
         <counts>
           <entry key="MF" value="1" />
           <entry key="class" value="8" />
-          <entry key="java" value="112" />
+          <entry key="java" value="115" />
           <entry key="png" value="1" />
-          <entry key="properties" value="12" />
-          <entry key="tmx" value="1" />
-          <entry key="xml" value="2" />
+          <entry key="properties" value="15" />
+          <entry key="tmx" value="3" />
+          <entry key="tsx" value="1" />
+          <entry key="xml" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="8" />
           <entry key="Image" value="1" />
-          <entry key="JAVA" value="112" />
+          <entry key="JAVA" value="115" />
           <entry key="Manifest" value="1" />
-          <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Properties" value="12" />
-          <entry key="XML" value="2" />
+          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="Properties" value="15" />
+          <entry key="XML" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="26" />
-          <entry key="java" value="37917" />
-          <entry key="properties" value="1501" />
+          <entry key="java" value="39893" />
+          <entry key="properties" value="1785" />
+          <entry key="tmx" value="5" />
+          <entry key="tsx" value="4" />
           <entry key="xml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="37917" />
-          <entry key="PLAIN_TEXT" value="26" />
-          <entry key="Properties" value="1501" />
+          <entry key="JAVA" value="39893" />
+          <entry key="PLAIN_TEXT" value="35" />
+          <entry key="Properties" value="1785" />
           <entry key="XML" value="2" />
         </counts>
       </usages-collector>
@@ -73,11 +118,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/maps/level0.tmx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="35" selection-start-line="2" selection-start-column="35" selection-end-line="2" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/maps/game_tileset.tsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="438">
-              <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
+            <state relative-caret-position="333">
+              <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3555#3556#0" expanded="true" />
@@ -103,22 +178,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/collision/CollisionHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2265">
-              <caret line="151" column="83" lean-forward="true" selection-start-line="151" selection-start-column="83" selection-end-line="151" selection-end-column="83" />
+            <state relative-caret-position="2070">
+              <caret line="138" column="13" lean-forward="true" selection-start-line="138" selection-start-column="13" selection-end-line="138" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -126,56 +189,34 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/level/LevelManager.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/levels/LevelConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1710">
-              <caret line="114" column="99" selection-start-line="114" selection-start-column="99" selection-end-line="114" selection-end-column="99" />
+            <state relative-caret-position="255">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#469#470#0" expanded="true" />
+                <element signature="e#500#501#0" expanded="true" />
+                <element signature="e#574#575#0" expanded="true" />
+                <element signature="e#621#622#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/Panel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="14" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/GraphicsManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="52" column="121" selection-start-line="52" selection-start-column="121" selection-end-line="52" selection-end-column="121" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/displays/PlayAreaDisplay.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/displays/InformationDisplay.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/levels/LevelEnemyConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
-              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+              <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+              <folding>
+                <element signature="e#422#423#0" expanded="true" />
+                <element signature="e#454#455#0" expanded="true" />
+                <element signature="e#493#494#0" expanded="true" />
+                <element signature="e#517#518#0" expanded="true" />
+                <element signature="e#544#545#0" expanded="true" />
+                <element signature="e#568#569#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -183,11 +224,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+            <state relative-caret-position="675">
+              <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/config/config.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="855">
+              <caret line="57" selection-start-line="57" selection-end-line="57" />
             </state>
           </provider>
         </entry>
@@ -208,7 +258,11 @@
       <find>System.out.println</find>
       <find>attemptedX</find>
       <find>playerActor</find>
+      <find>1</find>
     </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/src/main/java</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -241,15 +295,22 @@
         <option value="$PROJECT_DIR$/src/main/resources/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/collision/CollisionHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/actors/EnemyActorConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/EnemyActor.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/PlayerActor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/level/LevelManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/graphics/displays/PlayAreaDisplay.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/config/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/maps/test2.tmx" />
+        <option value="$PROJECT_DIR$/src/main/resources/maps/game_tileset.tsx" />
+        <option value="$PROJECT_DIR$/src/main/resources/maps/test3.tmx" />
+        <option value="$PROJECT_DIR$/src/main/resources/config/levels.properties" />
+        <option value="$PROJECT_DIR$/src/main/resources/config/config.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/levels/LevelEnemyConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/levels/LevelConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/config/level.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java" />
       </list>
     </option>
   </component>
@@ -342,6 +403,16 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lawnmower" type="462c0819:PsiDirectoryNode" />
+              <item name="configuration" type="462c0819:PsiDirectoryNode" />
+              <item name="levels" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="lawnmower" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LawnMowerMania" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="lawnmower" type="462c0819:PsiDirectoryNode" />
               <item name="core" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -409,6 +480,14 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="lawnmower" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LawnMowerMania" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="maps" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -423,7 +502,7 @@
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="lawnmower" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/java/io/github/shamrice/lawnmower/common/TileType.java" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538169719331" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538172137576" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -482,7 +561,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3288948" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32884097" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.20080863" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39946738" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -626,9 +705,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/maps/test3.tmx">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/slick2d/slick2d-core/1.0.2/slick2d-core-1.0.2.jar!/org/newdawn/slick/tiled/TiledMap.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="291">
@@ -731,16 +807,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2745">
-          <caret line="185" column="65" selection-start-line="185" selection-start-column="65" selection-end-line="185" selection-end-column="65" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/level/LevelManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1710">
@@ -795,26 +861,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2265">
-          <caret line="151" column="83" lean-forward="true" selection-start-line="151" selection-start-column="83" selection-end-line="151" selection-end-column="83" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/actors/ActorConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -827,13 +873,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/config/config.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="37" column="26" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/common/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -843,8 +882,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/actors/Actor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
+        <state relative-caret-position="333">
+          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3555#3556#0" expanded="true" />
@@ -855,6 +894,98 @@
             <element signature="e#3981#3982#0" expanded="true" />
             <element signature="e#4025#4026#0" expanded="true" />
             <element signature="e#4092#4093#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/maps/test2.tmx">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/maps/lawn.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/maps/game_tileset.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/maps/level0.tmx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="35" selection-start-line="2" selection-start-column="35" selection-end-line="2" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/config/level.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="21" lean-forward="true" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/config/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/core/Engine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/ConfigurationBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2070">
+          <caret line="138" column="13" lean-forward="true" selection-start-line="138" selection-start-column="13" selection-end-line="138" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/Configuration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="49" column="28" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/levels/LevelEnemyConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+          <folding>
+            <element signature="e#422#423#0" expanded="true" />
+            <element signature="e#454#455#0" expanded="true" />
+            <element signature="e#493#494#0" expanded="true" />
+            <element signature="e#517#518#0" expanded="true" />
+            <element signature="e#544#545#0" expanded="true" />
+            <element signature="e#568#569#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/shamrice/lawnmower/configuration/levels/LevelConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+          <folding>
+            <element signature="e#469#470#0" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#574#575#0" expanded="true" />
+            <element signature="e#621#622#0" expanded="true" />
           </folding>
         </state>
       </provider>

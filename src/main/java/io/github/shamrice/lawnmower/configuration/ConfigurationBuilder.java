@@ -4,6 +4,8 @@ package io.github.shamrice.lawnmower.configuration;
 
 import io.github.shamrice.lawnmower.actors.ActorType;
 import io.github.shamrice.lawnmower.configuration.actors.ActorConfiguration;
+import io.github.shamrice.lawnmower.configuration.levels.LevelConfiguration;
+import io.github.shamrice.lawnmower.configuration.levels.LevelEnemyConfiguration;
 import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.inventory.lookup.InventoryItemLookUp;
@@ -24,9 +26,12 @@ public class ConfigurationBuilder {
     private final static Logger logger = Logger.getLogger(ConfigurationBuilder.class);
 
     private static Properties configProperties = new Properties();
+    private static Properties levelProperties = new Properties();
 
     //TODO : use relative path.
-    private static String configurationLocation = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/config/config.properties";
+    private static String configurationLocation = "/home/erik/Documents/github/lawnMowerMania/LawnMowerMania/src/main/resources/config/";
+    private static String configFileName = "config.properties";
+    private static String levelConfigFileName = "level.properties";
     private static String assetsLocation;
     private static String mapsLocation;
 
@@ -38,9 +43,7 @@ public class ConfigurationBuilder {
 
         logger.info("Building configuration using file: " + configurationLocation);
 
-
-
-        File configFile = new File(configurationLocation);
+        File configFile = new File(configurationLocation + configFileName);
         String configFilePath = configFile.getPath();
 
         if (!configFile.exists() || configFile.isDirectory()) {
@@ -55,10 +58,15 @@ public class ConfigurationBuilder {
         assetsLocation = configProperties.getProperty("assets.directory");
         mapsLocation = configProperties.getProperty("maps.directory");
 
+        configInput = new FileInputStream(new File(configurationLocation + levelConfigFileName).getPath());
+        levelProperties.load(configInput);
+        configInput.close();
+
         return new Configuration(
                 buildInventoryItemLookup(),
                 buildTrueTypeFont(),
-                buildActorConfigurationMap()
+                buildActorConfigurationMap(),
+                buildLevelConfiguration()
         );
     }
 
@@ -154,6 +162,35 @@ public class ConfigurationBuilder {
 
         logger.info("Successfully built enemy configuration map.");
         return actorConfigurationMap;
+    }
+
+    private static List<LevelConfiguration> buildLevelConfiguration() {
+
+        List<LevelConfiguration> levelConfigurations = new LinkedList<>();
+
+        int numLevels = Integer.parseInt(levelProperties.getProperty("level.count"));
+
+        //for the amount of levels configured. read the level properties for each
+        for (int i = 0; i < numLevels; i++) {
+            String filename = mapsLocation + levelProperties.getProperty("level." + i + ".map.filename");
+            List<LevelEnemyConfiguration> levelEnemyConfigurations = new ArrayList<>();
+
+            int numEnemies = Integer.parseInt(levelProperties.getProperty("level." + i + ".enemy.count"));
+
+            //for number of enemies in level, get their information.
+            for (int e = 0; e < numEnemies; e++) {
+                LevelEnemyConfiguration levelEnemyConfiguration = new LevelEnemyConfiguration(
+                        ActorType.valueOf(levelProperties.getProperty("level." + i + ".enemy." + e + ".type").toUpperCase()),
+                        Float.parseFloat(levelProperties.getProperty("level." + i + ".enemy." + e + ".x")),
+                        Float.parseFloat(levelProperties.getProperty("level." + i + ".enemy." + e + ".y"))
+                );
+                levelEnemyConfigurations.add(levelEnemyConfiguration);
+            }
+
+            levelConfigurations.add(new LevelConfiguration(filename, levelEnemyConfigurations));
+        }
+
+        return levelConfigurations;
     }
 
 
