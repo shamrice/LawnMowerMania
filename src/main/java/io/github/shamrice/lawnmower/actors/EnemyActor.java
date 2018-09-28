@@ -33,6 +33,15 @@ public class EnemyActor extends Actor {
         }
     }
 
+    public boolean isBlockedByLevelBoundaries() {
+        switch (getActorType()) {
+            case DOG:
+                return true;
+        }
+
+        return false;
+    }
+
 
 
     /**

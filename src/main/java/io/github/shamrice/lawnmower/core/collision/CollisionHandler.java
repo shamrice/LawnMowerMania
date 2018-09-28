@@ -57,19 +57,19 @@ public class CollisionHandler {
 
     /**
      * Checks to see if player has collided with a boundary tile and handle it.
-     * @param player player
+     * @param actor Actor to test collisionw with boundary for
      * @param deltaX change in player x position
      * @param deltaY change in player y position
      * @return Returns true on collision or false if no collision is happening.
      * @throws IllegalStateException Exception is thrown if there is no collision map set up for the collision handler.
      */
-    public boolean checkCollision(PlayerActor player, float deltaX, float deltaY) throws IllegalStateException {
+    public boolean checkCollision(Actor actor, float deltaX, float deltaY) throws IllegalStateException {
 
         if (this.collisionTileList == null)
             throw new IllegalStateException("No collision map set up to check collision against.");
 
-        float attemptedX = player.getX() + deltaX;
-        float attemptedY = player.getY() + deltaY;
+        float attemptedX = actor.getX() + deltaX;
+        float attemptedY = actor.getY() + deltaY;
 
         Shape tempPlayerShape = new Rectangle(
                 attemptedX,

@@ -5,6 +5,7 @@ import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.common.Constants;
 import io.github.shamrice.lawnmower.common.ScoreTable;
 import io.github.shamrice.lawnmower.common.TileType;
+import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import io.github.shamrice.lawnmower.state.LevelState;
@@ -12,8 +13,6 @@ import org.apache.log4j.Logger;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.List;
-
-import static java.lang.Math.exp;
 
 public class LevelManager {
 
@@ -38,7 +37,7 @@ public class LevelManager {
                 if (map.getTileId(mapX, mapY, Constants.MAP_LAYER) == TileType.OVER_MOWED_GRASS.getId()
                         || map.getTileId(mapX, mapY, Constants.MAP_LAYER) == TileType.DEAD_GRASS.getId()) {
 
-                    map.setTileId(mapX, mapY, 1, TileType.CUT_GRASS.getId());
+                    map.setTileId(mapX, mapY, Constants.MAP_LAYER, TileType.CUT_GRASS.getId());
 
                     GameState.getInstance().changeScore(ScoreTable.CUT_GRASS_SCORE);
                     return true;
@@ -99,7 +98,7 @@ public class LevelManager {
 
 
     //TODO : will be possibly moved into it's own enemy manager where each enemy can be handled based on type.
-    public void moveEnemies(PlayerActor player, List<EnemyActor> enemiesToMove) {
+    public void moveEnemies(CollisionHandler collisionHandler, PlayerActor player, List<EnemyActor> enemiesToMove) {
 
         for (EnemyActor enemyActor : enemiesToMove) {
 
@@ -131,7 +130,15 @@ public class LevelManager {
                 deltaY = -deltaY;
             }
 
-            enemyActor.updateXY(deltaX, deltaY);
+            //don't move enemy if they attempt to walk into a wall and aren't able to fly over.
+            if (enemyActor.isBlockedByLevelBoundaries()) {
+                if (!collisionHandler.checkCollision(enemyActor, deltaX, deltaY)) {
+                    enemyActor.updateXY(deltaX, deltaY);
+                }
+            } else {
+                enemyActor.updateXY(deltaX, deltaY);
+            }
+
         }
     }
 

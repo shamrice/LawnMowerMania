@@ -21,6 +21,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class Engine extends BasicGame {
 
@@ -54,8 +55,8 @@ public class Engine extends BasicGame {
         Configuration configuration = ConfigurationBuilder.buildConfiguration();
 
         // TODO : assets should be based on config and built/displayed per level.
-        Image playerImage1 = new Image(ASSET_LOCATION + "lawnmower1.png");
-        Image playerImage2 = new Image(ASSET_LOCATION + "lawnmower2.png");
+        Image playerImage1 = new Image(ASSET_LOCATION + "lawnmower0.png");
+        Image playerImage2 = new Image(ASSET_LOCATION + "lawnmower1.png");
 
         List<Image> playerImages = new LinkedList<>();
         playerImages.add(playerImage1);
@@ -67,8 +68,8 @@ public class Engine extends BasicGame {
 
 
         // TODO : assets should be based on config and built/displayed per level.
-        Image beeImage1 = new Image(ASSET_LOCATION + "bee.png");
-        Image beeImage2 = new Image(ASSET_LOCATION + "bee2.png");
+        Image beeImage1 = new Image(ASSET_LOCATION + "bee0.png");
+        Image beeImage2 = new Image(ASSET_LOCATION + "bee1.png");
 
         List<Image> beeImages = new LinkedList<>();
         beeImages.add(beeImage1);
@@ -76,8 +77,19 @@ public class Engine extends BasicGame {
 
         Animation beeAnimation = new Animation(beeImages.toArray(new Image[0]), 100);
 
+        // TODO : assets should be based on config and built/displayed per level.
+        Image dogImage0 = new Image(ASSET_LOCATION + "dog0.png");
+        Image dogImage1 = new Image(ASSET_LOCATION + "dog1.png");
+        Image dogImage2 = new Image(ASSET_LOCATION + "dog2.png");
 
-        EnemyActor enemyActor = new EnemyActor(ActorType.BEE, beeAnimation, 716, 256, 100, 0.25f);
+        List<Image> dogImages = new LinkedList<>();
+        dogImages.add(dogImage0);
+        dogImages.add(dogImage1);
+        dogImages.add(dogImage2);
+        dogImages.add(dogImage1);
+
+        Animation dogAnimation = new Animation(dogImages.toArray(new Image[0]), 100);
+
 
         // TODO : assets should be based on config and built/displayed per level.
         TiledMap map = new TiledMap(MAPS_LOCATION + "test3.tmx");
@@ -93,9 +105,29 @@ public class Engine extends BasicGame {
             inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
         }
 
+        // TODO : currently debug building enemies randomly
         List<Actor> currentActors = new ArrayList<>();
-        currentActors.add(enemyActor);
         currentActors.add(player);
+
+        for (int i = 0; i < 5; i++) {
+            Random random = new Random();
+            int x = random.nextInt(500) + 200;
+            int y = random.nextInt(500) + 200;
+
+            ActorType enemyType = ActorType.BEE;
+            float movementSpeed = 0.25f;
+            Animation animation = beeAnimation;
+
+            boolean isDog = random.nextBoolean();
+            if (isDog) {
+                enemyType = ActorType.DOG;
+                movementSpeed = 0.35f;
+                animation = dogAnimation;
+            }
+
+            EnemyActor enemyActor = new EnemyActor(enemyType, animation, x, y, 100, movementSpeed);
+            currentActors.add(enemyActor);
+        }
 
         levelState.setCurrentActors(currentActors);
         levelState.setCurrentTiledMap(1, map);
@@ -184,7 +216,7 @@ public class Engine extends BasicGame {
             container.exit();
 
         //move enemies in the level.
-        levelManager.moveEnemies(player, levelState.getCurrentEnemyActors());
+        levelManager.moveEnemies(collisionHandler, player, levelState.getCurrentEnemyActors());
 
         //check collision between all current enemies and player.
         // TODO : migth switch back later to regular streamed foreach instead of parallel if threading issues arise.
