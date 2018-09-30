@@ -28,7 +28,7 @@ public class Engine extends BasicGame {
 
     private float delta;
     private boolean isMouseButtonDown = false;
-    private CollisionHandler collisionHandler;
+    //private CollisionHandler collisionHandler;
     private PlayerActor player;
     private GraphicsManager graphicsManager;
     private LevelManager levelManager;
@@ -56,43 +56,19 @@ public class Engine extends BasicGame {
         }
 
         Inventory inventory = new Inventory(configuration.getInventoryItemLookUp());
-
-        // TODO : inventory will eventually be updated via the shop before a level.
-        for (int i = 0; i < 100; i++) {
-            inventory.addInventoryItem(InventoryItemType.GRASS_SEED);
-        }
-
-        // TODO : move to some sort of level set up method instead.
-        TiledMap map = new TiledMap(configuration.getLevelConfiguration(0).getFilename());
-
-        collisionHandler = new CollisionHandler();
-        int numTilesNotToMow = collisionHandler.setUpCollisionMap(map);
-
-        List<Actor> currentActors = new ArrayList<>();
-
         player = new PlayerActor(configuration.getActorConfiguration(ActorType.PLAYER), 64, 50);
-        currentActors.add(player);
-
-        for (LevelEnemyConfiguration enemyConfiguration : configuration.getLevelConfiguration(0).getLevelEnemyConfigurations()) {
-            EnemyActor enemyActor = new EnemyActor(
-                    configuration.getActorConfiguration(enemyConfiguration.getActorType()),
-                    enemyConfiguration.getX(),
-                    enemyConfiguration.getY()
-            );
-            currentActors.add(enemyActor);
-        }
-
-        levelState.setCurrentActors(currentActors);
-        levelState.setCurrentTiledMap(0, map);
-        levelState.setMowTilesRemaining((map.getWidth() * map.getHeight()) - numTilesNotToMow);
 
         state.setConfiguration(configuration);
         state.setRunning(true);
         state.setInventory(inventory);
         state.setCurrentPanel(Panel.LEVEL);
 
+        levelState.addActorToCurrentActors(player);
+
         graphicsManager = new GraphicsManager(configuration.getTrueTypeFont(), player);
+
         levelManager = new LevelManager();
+        levelManager.initLevel();
 
         logger.info("Init complete.");
     }
@@ -153,7 +129,7 @@ public class Engine extends BasicGame {
                 break;
         }
 
-        if (!collisionHandler.checkCollision(player, tempStepX, tempStepY)) {
+        if (!levelState.getCollisionHandler().checkCollision(player, tempStepX, tempStepY)) {
             player.updateXY(tempStepX, tempStepY);
             levelManager.updateMowedTile(player);
         }
@@ -170,12 +146,12 @@ public class Engine extends BasicGame {
             container.exit();
 
         //move enemies in the level.
-        levelManager.moveEnemies(collisionHandler, player, levelState.getCurrentEnemyActors());
+        levelManager.moveEnemies(levelState.getCollisionHandler(), player, levelState.getCurrentEnemyActors());
 
         //check collision between all current enemies and player.
         levelState.getCurrentEnemyActors().parallelStream().forEach(
                 enemy -> {
-                    if (collisionHandler.checkCollisionBetweenActors(player, enemy)) {
+                    if (levelState.getCollisionHandler().checkCollisionBetweenActors(player, enemy)) {
                         logger.info("GAME OVER. You have been killed by a " + enemy.getActorType().name());
                         GameState.getInstance().setRunning(false);
                     }
@@ -216,7 +192,7 @@ public class Engine extends BasicGame {
         GameState state = GameState.getInstance();
         InventoryItem equippedItem = state.getInventory().getEquippedInventoryItem();
         if (equippedItem != null) {
-            if (collisionHandler.checkMouseCollision(x, y)) {
+            if (levelState.getCollisionHandler().checkMouseCollision(x, y)) {
                 if (levelManager.useInventoryItemOnMap(equippedItem.getInventoryItemType(), x, y)) {
                     logger.info("Used item " + state.getInventory().getEquippedInventoryItem().getName() + " at " + x + ", " + y);
                     state.getInventory().setEquippedInventoryItem(null);

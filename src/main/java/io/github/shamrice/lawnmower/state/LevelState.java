@@ -1,8 +1,8 @@
 package io.github.shamrice.lawnmower.state;
 
 import io.github.shamrice.lawnmower.actors.Actor;
-import io.github.shamrice.lawnmower.actors.ActorType;
 import io.github.shamrice.lawnmower.actors.EnemyActor;
+import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
@@ -12,10 +12,11 @@ public class LevelState {
 
     private static LevelState instance = null;
 
-    private int currentLevel = 1;
+    private int currentLevel = 0;
     private TiledMap currentTiledMap;
     private int mowTilesRemaining;
-    private List<Actor> currentActors;
+    private List<Actor> currentActors = new ArrayList<>();
+    private CollisionHandler collisionHandler;
 
     public static LevelState getInstance() {
         if (instance == null) {
@@ -24,7 +25,6 @@ public class LevelState {
 
         return instance;
     }
-
 
     public int getCurrentLevel() {
         return currentLevel;
@@ -55,8 +55,12 @@ public class LevelState {
         return currentActors;
     }
 
-    public void setCurrentActors(List<Actor> currentActors) {
-        this.currentActors = currentActors;
+    public void addActorsToCurrentActors(List<Actor> actors) {
+        currentActors.addAll(actors);
+    }
+
+    public void addActorToCurrentActors(Actor actor) {
+        currentActors.add(actor);
     }
 
     /**
@@ -74,5 +78,13 @@ public class LevelState {
         }
 
         return enemyActors;
+    }
+
+    public CollisionHandler getCollisionHandler() {
+        return collisionHandler;
+    }
+
+    public void setCollisionHandler(CollisionHandler collisionHandler) {
+        this.collisionHandler = collisionHandler;
     }
 }

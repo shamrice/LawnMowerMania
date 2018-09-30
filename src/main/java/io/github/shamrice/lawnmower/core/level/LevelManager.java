@@ -1,22 +1,67 @@
 package io.github.shamrice.lawnmower.core.level;
 
+import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.actors.EnemyActor;
 import io.github.shamrice.lawnmower.actors.PlayerActor;
 import io.github.shamrice.lawnmower.common.Constants;
 import io.github.shamrice.lawnmower.common.ScoreTable;
 import io.github.shamrice.lawnmower.common.TileType;
+import io.github.shamrice.lawnmower.configuration.levels.LevelEnemyConfiguration;
 import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
+import io.github.shamrice.lawnmower.core.graphics.Panel;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import io.github.shamrice.lawnmower.state.LevelState;
 import org.apache.log4j.Logger;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LevelManager {
 
     private final static Logger logger = Logger.getLogger(LevelManager.class);
+
+
+    public void initLevel() throws SlickException {
+
+        LevelState levelState = LevelState.getInstance();
+        GameState gameState = GameState.getInstance();
+        CollisionHandler collisionHandler = new CollisionHandler();
+
+        // TODO : inventory will eventually be updated via the shop before a level.
+        for (int i = 0; i < 100; i++) {
+            gameState.getInventory().addInventoryItem(InventoryItemType.GRASS_SEED);
+        }
+
+        TiledMap map = new TiledMap(gameState.getConfiguration()
+                .getLevelConfiguration(levelState.getCurrentLevel()).getFilename()
+        );
+
+        List<Actor> currentActors = new ArrayList<>();
+
+        for (LevelEnemyConfiguration enemyConfiguration :
+                gameState.getConfiguration()
+                        .getLevelConfiguration(levelState.getCurrentLevel())
+                        .getLevelEnemyConfigurations())
+        {
+            EnemyActor enemyActor = new EnemyActor(
+                    gameState.getConfiguration().getActorConfiguration(enemyConfiguration.getActorType()),
+                    enemyConfiguration.getX(),
+                    enemyConfiguration.getY()
+            );
+            currentActors.add(enemyActor);
+        }
+
+        int numTilesNotToMow = collisionHandler.setUpCollisionMap(map);
+        levelState.setCollisionHandler(collisionHandler);
+        levelState.addActorsToCurrentActors(currentActors);
+        levelState.setCurrentTiledMap(levelState.getCurrentLevel(), map);
+        levelState.setMowTilesRemaining((map.getWidth() * map.getHeight()) - numTilesNotToMow);
+
+        gameState.setCurrentPanel(Panel.LEVEL);
+    }
 
     /**
      * Uses InventoryItemType on TiledMap at specified x,y coordinates.
