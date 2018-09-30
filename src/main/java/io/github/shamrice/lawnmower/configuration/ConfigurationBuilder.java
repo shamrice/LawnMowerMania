@@ -41,7 +41,8 @@ public class ConfigurationBuilder {
      */
     public static Configuration buildConfiguration() throws IOException, SlickException {
 
-        logger.info("Building configuration using file: " + configurationLocation);
+        logger.info("Building configuration using file: " + configurationLocation + configFileName);
+        logger.info("Building level configuration using file: " + configurationLocation + levelConfigFileName);
 
         File configFile = new File(configurationLocation + configFileName);
         String configFilePath = configFile.getPath();
@@ -157,10 +158,10 @@ public class ConfigurationBuilder {
             );
 
             actorConfigurationMap.put(actorType, actorConfiguration);
-            logger.info("Successfully built enemy configuration for " + actorName);
+            logger.info("Successfully built actor configuration for " + actorName);
         }
 
-        logger.info("Successfully built enemy configuration map.");
+        logger.info("Successfully built actor configuration map.");
         return actorConfigurationMap;
     }
 
