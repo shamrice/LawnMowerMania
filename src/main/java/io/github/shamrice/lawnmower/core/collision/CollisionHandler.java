@@ -4,7 +4,8 @@ import io.github.shamrice.lawnmower.actors.Actor;
 import io.github.shamrice.lawnmower.common.Constants;
 import io.github.shamrice.lawnmower.common.TileType;
 import io.github.shamrice.lawnmower.state.LevelState;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.tiled.TiledMap;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class CollisionHandler {
 
-    private final static Logger logger = Logger.getLogger(CollisionHandler.class);
+    private final static Logger logger = LogManager.getLogger();
     private List<Rectangle> collisionTileList = null;
 
     public CollisionHandler() {}

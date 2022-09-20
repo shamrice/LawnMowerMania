@@ -2,6 +2,7 @@ package io.github.shamrice.lawnmower.configuration;
 
 // TODO : configuration builder builds config. Build this out.
 
+
 import io.github.shamrice.lawnmower.actors.ActorType;
 import io.github.shamrice.lawnmower.configuration.actors.ActorConfiguration;
 import io.github.shamrice.lawnmower.configuration.levels.LevelConfiguration;
@@ -9,7 +10,8 @@ import io.github.shamrice.lawnmower.configuration.levels.LevelEnemyConfiguration
 import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.inventory.lookup.InventoryItemLookUp;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -23,7 +25,7 @@ import java.util.*;
 
 public class ConfigurationBuilder {
 
-    private final static Logger logger = Logger.getLogger(ConfigurationBuilder.class);
+    private final static Logger logger = LogManager.getLogger();
 
     private static Properties configProperties = new Properties();
     private static Properties levelProperties = new Properties();

@@ -3,8 +3,6 @@ package io.github.shamrice.lawnmower.core;
 import io.github.shamrice.lawnmower.actors.*;
 import io.github.shamrice.lawnmower.configuration.Configuration;
 import io.github.shamrice.lawnmower.configuration.ConfigurationBuilder;
-import io.github.shamrice.lawnmower.configuration.levels.LevelEnemyConfiguration;
-import io.github.shamrice.lawnmower.core.collision.CollisionHandler;
 import io.github.shamrice.lawnmower.core.graphics.GraphicsManager;
 import io.github.shamrice.lawnmower.core.graphics.Panel;
 import io.github.shamrice.lawnmower.core.level.LevelManager;
@@ -13,10 +11,10 @@ import io.github.shamrice.lawnmower.inventory.InventoryItem;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import io.github.shamrice.lawnmower.state.LevelState;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.tiled.TiledMap;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ import java.util.List;
 
 public class Engine extends BasicGame {
 
-    private final static Logger logger = Logger.getLogger(Engine.class);
+    private final static Logger logger = LogManager.getLogger();
 
     private float delta;
     private boolean isMouseButtonDown = false;

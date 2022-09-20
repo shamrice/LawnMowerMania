@@ -12,7 +12,8 @@ import io.github.shamrice.lawnmower.core.graphics.Panel;
 import io.github.shamrice.lawnmower.inventory.InventoryItemType;
 import io.github.shamrice.lawnmower.state.GameState;
 import io.github.shamrice.lawnmower.state.LevelState;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class LevelManager {
 
-    private final static Logger logger = Logger.getLogger(LevelManager.class);
+    private final static Logger logger = LogManager.getLogger();
 
 
     public void initLevel() throws SlickException {
